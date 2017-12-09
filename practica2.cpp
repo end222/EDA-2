@@ -71,7 +71,6 @@ void ip(ifstream& entrada, ofstream& salida){
 }
 
 void lp(ifstream& entrada, ofstream& salida){
-	salida << "lp" << endl;
 	char argumento[1000];
 	entrada.getline(argumento,1000);
 	switch(existeClave(c, convertir(argumento)))
@@ -87,7 +86,27 @@ void lp(ifstream& entrada, ofstream& salida){
 }
 
 void bp(ifstream& entrada, ofstream& salida){
-	salida << "bp" << endl;
+	char argumento[1000];
+	entrada.getline(argumento,1000);
+	
+	/*
+	 * Codigo utilizado en la funcion borrar en cmt.h
+	 * 0: la pregunta a borrar se encuentra en la coleccion 
+	 * 1: la pregunta a borrar no se encuentra en la coleccion
+	 * 2: no se puede borrar debido al estado del concurso
+	 */
+
+	switch(borrar(c, convertir(argumento)))
+	{
+		case 0:
+			salida << "PREGUNTA BORRADA: " << convertir(argumento) << endl;
+			break;
+		case 1:
+			salida << "BORRADO DESCARTADO: " << convertir(argumento) << endl;
+			break;
+		case 2:
+			salida << "BORRADO pregunta NO POSIBLE: " << convertir(argumento) << endl;
+	}
 }
 
 void lc(ifstream& entrada, ofstream& salida){
