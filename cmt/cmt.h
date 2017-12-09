@@ -45,7 +45,7 @@ template <typename T1, typename T2, typename T3> struct cmt {
     friend void crear<T1, T2, T3>(cmt<T1, T2, T3>& c);
     friend bool esVacio<T1, T2, T3>(cmt<T1, T2, T3>& c);
     friend bool existeClave<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k);
-    friend void void introducir<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k, T2& v);
+    friend void introducir<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k, T2& v);
 
     friend bool tieneTiempo<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k);
     friend bool obtenerDato<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k, T2& v);
@@ -53,7 +53,7 @@ template <typename T1, typename T2, typename T3> struct cmt {
     friend bool marcarTiempo<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k, T3& t);
     friend void borrar<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k);
     friend int tamano<T1, T2, T3>(cmt<T1, T2, T3>& c);
-    friend string<T1, T2, T3>(cmt<T1, T2, T3>& c);
+    friend string listar<T1, T2, T3>(cmt<T1, T2, T3>& c);
     // ITERADORES
     friend void iniciarIterador<T1, T2, T3>(cmt<T1, T2, T3>& c);
     friend bool existeSiguiente<T1, T2, T3>(cmt<T1, T2, T3>& c);
