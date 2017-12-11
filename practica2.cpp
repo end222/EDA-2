@@ -19,6 +19,19 @@
 #include <fstream>
 #include <string>
 
+void separar(int& horas, int& minutos, char* tiempo){
+	char horasStr[2];
+	horasStr[0] = tiempo[0];
+	horasStr[1] = tiempo[1];
+
+	char minutosStr[2];
+	minutosStr[0] = tiempo[3];
+	minutosStr[1] = tiempo[4];
+
+	horas = convertir(horasStr);
+	minutos = convertir(minutosStr);
+}
+
 int convertir(char* cadena){
   int i = 0;
   int numero = 0;
@@ -28,6 +41,10 @@ int convertir(char* cadena){
   }
   return numero;
 }
+
+/*
+ * Insertar o actualizar pregunta en la coleccion
+ */
 
 void ip(ifstream& entrada, ofstream& salida){
 	char argumentos[5][1000];
@@ -70,20 +87,28 @@ void ip(ifstream& entrada, ofstream& salida){
 	// Falta mostrar la info de la pregunta
 }
 
+/*
+ * Muestra la info de una pregunta con la clave que se pasa en el fichero de entrada, si existe
+ */
+
 void lp(ifstream& entrada, ofstream& salida){
 	char argumento[1000];
 	entrada.getline(argumento,1000);
 	switch(existeClave(c, convertir(argumento)))
 	{
 		case false:
-			salida << "PREGUNTA NO encontrada: " << flush;
+			salida << "PREGUNTA NO encontrada: " << argumento << endl;
 			break;
 		case true:
 			salida << "PREGUNTA ENCONTRADA: " << flush;
+			// Info de la pregunta
 			break;
 	}
-	// Falta mostrar la info de la pregunta
 }
+
+/*
+ * Borra la pregunta con la clave que se pasa en el fichero de entrada, si es posible
+ */
 
 void bp(ifstream& entrada, ofstream& salida){
 	char argumento[1000];
@@ -109,12 +134,51 @@ void bp(ifstream& entrada, ofstream& salida){
 	}
 }
 
+/*
+ * Listar
+ */
+
 void lc(ifstream& entrada, ofstream& salida){
-	salida << "lc" << endl;
+	salida << listarPreguntas(c) << endl;
 }
 
+/*
+ * Poner marca de tiempo a una pregunta con la clave mandada por el archivo de entrada
+ */
+
 void mp(ifstream& entrada, ofstream& salida){
-	salida << "mp" << endl;
+	char argumento[2][1000];
+	entrada.getline(argumento[0],1000);
+	entrada.getline(argumento[1],1000);
+	/*
+	 * argumento[0]: clave
+	 * argumento[1]: marca de tiempo en formato hh:mm
+	 */
+
+	instante t;
+	int horas;
+	int minutos;
+
+	separar(horas, minutos, argumento[1]);
+
+	crearInstante(t, horas, minutos);
+
+	/*
+	 * Codigo utilizado en la funcion marcarTiempo en cmt.h
+	 * false: la pregunta a marcar se encuentra en la coleccion 
+	 * true: la pregunta a marcar no se encuentra en la coleccion
+	 */
+
+	switch(marcarTiempo(c, convertir(argumento[0]),t))
+	{
+		case false:
+			salida << "PREGUNTA MARCADA: " << convertir(argumento[0]) << ";" << argumento[1] << endl;
+			break;
+		case true:
+			salida << "MARCA DESCARTADA: " << convertir(argumento[0]) << endl;
+			break;
+	}
+
 }
 
 void ipa(ifstream& entrada, ofstream& salida){
