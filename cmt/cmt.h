@@ -5,11 +5,11 @@
  * Fichero: cmt.h
  */
 
+#include <iostream>
+#include <string>
 #include "../clave/clave.h"
 #include "../instante/instante.h"
 #include "../pregunta/pregunta.h"
-#include <string>
-#include <iostream>
 #ifndef CMT_H
 #define CMT_H
 using namespace std;
@@ -41,7 +41,8 @@ template <typename T1, typename T2, typename T3> struct terna {
     T3 t;
     bool hayTiempo;
 };
-template <typename T1, typename T2, typename T3> struct cmt {
+template <typename T1, typename T2, typename T3> 
+struct cmt {
     friend void crear<T1, T2, T3>(cmt<T1, T2, T3>& c);
     friend bool esVacio<T1, T2, T3>(cmt<T1, T2, T3>& c);
     friend bool existeClave<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k);
@@ -59,9 +60,55 @@ template <typename T1, typename T2, typename T3> struct cmt {
     friend bool existeSiguiente<T1, T2, T3>(cmt<T1, T2, T3>& c);
     friend bool siguiente<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k, T2& v, T3& t);
 
-   private:
-    terna<T1, T2, T3>;
-    
+private:
+		terna<T1, T2, T3> dato;
+		cmt* izq;
+		cmt* der;
 };
 
+
+
+template <typename T1, typename T2, typename T3>
+void crear(cmt<T1,T2,T3>& c){
+	c=nullptr;
+}
+
+
+template <typename T1, typename T2, typename T3>
+bool esVacio(cmt<T1,T2,T3>& c){
+	return c==nullptr;
+	
+}
+
+template <typename T1, typename T2, typename T3>
+bool existeClave(cmt<T1, T2, T3>& c, T1& k){
+	if (!esVacio(c)){
+		if (k<c->dato.k){
+			return existeClave(k->izq,k);	
+		}
+		else if (k>c->dato.k){
+			return existeClave(k->der,k);	
+		}
+		else if (k==c->dato.k){
+			return true;
+		}
+	}
+	else{
+		return false;
+	}
+}
+template <typename T1, typename T2, typename T3>
+void introducir(cmt<T1, T2, T3>& c, T1& k, T2& v){
+	if (c==nullptr){
+		new typename cmt<T1,T2> aux;
+		aux.dato.k=k;
+		aux.dato.v=v;
+		aux.der=nullptr;
+		aux.izq=nullptr;
+	}
+	else {
+		if (k<=aux.)
+	}
+}
+	
 #endif  // fin de cmt
