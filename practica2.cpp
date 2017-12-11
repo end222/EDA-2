@@ -9,10 +9,8 @@
 #include "participante/participante.h"
 #include "alias/alias.h"
 #include "clave/clave.h"
-#include "cmt/cmt.h"
 #include "concurso/concurso.h"
 #include "instante/instante.h"
-#include "ronda/ronda.h"
 #include "pregunta/pregunta.h"
 
 #include <iostream>
@@ -33,46 +31,46 @@ void separar(int& horas, int& minutos, char* tiempo){
 }
 
 int convertir(char* cadena){
-  int i = 0;
-  int numero = 0;
-  while(cadena[i]!='\0'){
-    numero = numero * 10 + cadena[i] - '0';
-    i++;
-  }
-  return numero;
+  	int i = 0;
+  	int numero = 0;
+  	while(cadena[i]!='\0'){
+    		numero = numero * 10 + cadena[i] - '0';
+    		i++;
+  	}
+  	return numero;
 }
 
 /*
  * Insertar o actualizar pregunta en la coleccion
  */
 
-void ip(ifstream& entrada, ofstream& salida){
-	char argumentos[5][1000];
+void ip(ifstream& entrada, ofstream& salida, concurso& c){
+	char argumento[5][1000];
 	pregunta question;
 	int i = 0;
 	
 	/*
-	 * argumentos[0]: Clave de la pregunta
-	 * argumentos[1]: Texto con el que se formula la pregunta
-	 * argumentos[2]: Primera solucion
-	 * argumentos[3]: Segunda solucion
-	 * argumentos[4]: Solucion correcta
+	 * argumento[0]: Clave de la pregunta
+	 * argumento[1]: Texto con el que se formula la pregunta
+	 * argumento[2]: Primera solucion
+	 * argumento[3]: Segunda solucion
+	 * argumento[4]: Solucion correcta
 	 */
 
 	while(i < 5){
-		entrada.getline(argumentos[i],100);
+		entrada.getline(argumento[i],100);
 		i++;
 	}
 
 	/*
-	 * Codigo de error utilizado en la funcion introducir en cmt.h
+	 * Codigo de error utilizado en la funcion introducir en concurso.h
 	 * 0: no existia una pregunta con la clave de la que se quiere introducir en la coleccion
 	 * 1: si que existia
 	 * 2: se descarta la insercion
 	 */	
 
-	crearPregunta(question, argumentos[1], argumentos[2], argumentos[3], convertir(argumentos[4]));
-	switch(introducir(c, convertir(argumentos[0]), question)
+	crearPregunta(question, argumento[1], argumento[2], argumento[3], convertir(argumento[4]));
+	switch(anadirPregunta(c, convertir(argumento[0]), question)
 	{		
 		case 0:
 			salida << "INSERCION REALIZADA: " << flush;
@@ -91,10 +89,10 @@ void ip(ifstream& entrada, ofstream& salida){
  * Muestra la info de una pregunta con la clave que se pasa en el fichero de entrada, si existe
  */
 
-void lp(ifstream& entrada, ofstream& salida){
+void lp(ifstream& entrada, ofstream& salida, concurso& c){
 	char argumento[1000];
 	entrada.getline(argumento,1000);
-	switch(existeClave(c, convertir(argumento)))
+	switch(existePregunta(c, convertir(argumento)))
 	{
 		case false:
 			salida << "PREGUNTA NO encontrada: " << argumento << endl;
@@ -110,18 +108,18 @@ void lp(ifstream& entrada, ofstream& salida){
  * Borra la pregunta con la clave que se pasa en el fichero de entrada, si es posible
  */
 
-void bp(ifstream& entrada, ofstream& salida){
+void bp(ifstream& entrada, ofstream& salida, concurso& c){
 	char argumento[1000];
 	entrada.getline(argumento,1000);
 	
 	/*
-	 * Codigo utilizado en la funcion borrar en cmt.h
+	 * Codigo utilizado en la funcion borrar en concurso.h
 	 * 0: la pregunta a borrar se encuentra en la coleccion 
 	 * 1: la pregunta a borrar no se encuentra en la coleccion
 	 * 2: no se puede borrar debido al estado del concurso
 	 */
 
-	switch(borrar(c, convertir(argumento)))
+	switch(borrarPregunta(c, convertir(argumento)))
 	{
 		case 0:
 			salida << "PREGUNTA BORRADA: " << convertir(argumento) << endl;
@@ -138,7 +136,7 @@ void bp(ifstream& entrada, ofstream& salida){
  * Listar
  */
 
-void lc(ifstream& entrada, ofstream& salida){
+void lc(ifstream& entrada, ofstream& salida, concurso& c){
 	salida << listarPreguntas(c) << endl;
 }
 
@@ -146,7 +144,7 @@ void lc(ifstream& entrada, ofstream& salida){
  * Poner marca de tiempo a una pregunta con la clave mandada por el archivo de entrada
  */
 
-void mp(ifstream& entrada, ofstream& salida){
+void mp(ifstream& entrada, ofstream& salida, concurso& c){
 	char argumento[2][1000];
 	entrada.getline(argumento[0],1000);
 	entrada.getline(argumento[1],1000);
@@ -164,12 +162,12 @@ void mp(ifstream& entrada, ofstream& salida){
 	crearInstante(t, horas, minutos);
 
 	/*
-	 * Codigo utilizado en la funcion marcarTiempo en cmt.h
+	 * Codigo utilizado en la funcion marcarTiempo en concurso.h
 	 * false: la pregunta a marcar se encuentra en la coleccion 
 	 * true: la pregunta a marcar no se encuentra en la coleccion
 	 */
 
-	switch(marcarTiempo(c, convertir(argumento[0]),t))
+	switch(marcarPregunta(c, convertir(argumento[0]),t))
 	{
 		case false:
 			salida << "PREGUNTA MARCADA: " << convertir(argumento[0]) << ";" << argumento[1] << endl;
@@ -181,51 +179,246 @@ void mp(ifstream& entrada, ofstream& salida){
 
 }
 
-void ipa(ifstream& entrada, ofstream& salida){
-	salida << "ipa" << endl;
+void ipa(ifstream& entrada, ofstream& salida, concurso& c){
+	char argumento[2][1000];
+	entrada.getline(argumento[0],1000);
+	entrada.getline(argumento[1],1000);
+
+	/*
+	 * argumento[0]: alias
+	 * argumento[1]: datos del participante
+	 */
+	
+	participante p;
+	crearParticipante(p, argumento[1]);
+
+	/*
+	 * Codigo utilizado en la funcion marcarTiempo en concurso.h
+	 * 0: No existia el participante 
+	 * 1: ya existia el participante
+	 * 2: no es posible introducir al participante
+	 */
+
+	switch(anadirConcursante(c, argumentos[0], p))
+	{
+		case 1:
+			salida << "participante INSCRITO: " << flush;
+			break;
+		case 2:
+			salida << "participante ACTUALIZADO: " << flush;
+			break;
+		case 3:
+			salida << "inscripcion CERRADA: " << flush;
+			break;
+	}
+	// Falta la info del participante
 }
 
-void bpa(ifstream& entrada, ofstream& salida){
-	salida << "bpa" << endl;
+void bpa(ifstream& entrada, ofstream& salida, concurso& c){
+	char argumento[1000];
+	entrada.getline(argumento,1000);
+
+	/*
+	 * argumento[0]: alias
+	 */
+	
+	/*
+	 * Codigo utilizado en la funcion marcarTiempo en concurso.h
+	 * 0: No existia el participante 
+	 * 1: ya existia el participante
+	 * 2: no es posible borrar al participante
+	 */
+
+	switch(borrarConcursante(c, p))
+	{
+		case 0:
+			salida << "participante NO ENCONTRADO: " << argumento << endl;
+			break;
+		case 1:
+			salida << "participante BORRADO: " << argumento << endl;
+			break;
+		case 2:
+			salida << "BORRADO participante DESCARTADO: " << argumento << endl;
+			break;
+	}
+	// Falta la info del participante
 }
 
-void mpa(ifstream& entrada, ofstream& salida){
-	salida << "mpa" << endl;
+void mpa(ifstream& entrada, ofstream& salida, concurso& c){
+	char argumento[1000];
+	entrada.getline(argumento,1000);
+
+	/*
+	 * argumento[0]: alias
+	 */
+	
+	/*
+	 * Codigo utilizado en la funcion marcarTiempo en concurso.h
+	 * true: No existia el participante 
+	 * false: ya existia el participante
+	 */
+
+	switch(borrarConcursante(c, p))
+	{
+		case true:
+			salida << "participante DESCONOCIDO: " << argumento << endl;
+			break;
+		case false:
+			salida << "participante ENCONTRADO: " << endl;
+			break;
+			// Falta la info del participante
+	}
 }
 
-void oc(ifstream& entrada, ofstream& salida){
-	salida << "oc" << endl;
+void oc(ifstream& entrada, ofstream& salida, concurso& c){
+	/*
+	 * Codigo utilizado en la funcion marcarTiempo en concurso.h
+	 * 0: existe un candidato
+	 * 1: la ronda esta vacia
+	 * 2: consulta descartada por el estado de la ronda
+	 */
+
+	participante p;
+
+	switch(obtenerConcursanteActual(c, p))
+	{
+		case 0:
+			salida << "CANDIDATO a evaluar: " << argumento << endl;
+			break;
+		case 1:
+			salida << "ronda VACIA: " << argumento << endl;
+			break;
+		case 2:
+			salida << "CONSULTA candidato DESCARTADA: " << argumento << endl;
+			break;
+	}
+	// Falta la info del participante
 }
 
-void lr(ifstream& entrada, ofstream& salida){
-	salida << "lr" << endl;
+void lr(ifstream& entrada, ofstream& salida, concurso& c){
+	salida << listarConcursantes << endl;
 }
 
-void ii(ifstream& entrada, ofstream& salida){
-	salida << "ii" << endl;
+void ii(ifstream& entrada, ofstream& salida, concurso& c){
+	
+	/*
+	 * Codigo utilizado en la funcion marcarTiempo en concurso.h
+	 * false: se puede pasar a inscripcion
+	 * true: no se puede pasar a inscripcion
+	 */
+
+	switch(iniciarInscripcion(c))
+	{
+		case true:
+			salida << "INSCRIPCION CANCELADA" << endl;
+			break;
+		case false:
+			salida << "INSCRIPCION ABIERTA" << endl;
+			break;
+	}
 }
 
-void ij(ifstream& entrada, ofstream& salida){
-	salida << "ij" << endl;
+void ij(ifstream& entrada, ofstream& salida, concurso& c){
+	
+	/*
+	 * Codigo utilizado en la funcion marcarTiempo en concurso.h
+	 * false: se puede pasar a fase de juego
+	 * true: no se puede pasar a fase de juego
+	 */
+
+	switch(iniciarJuego(c))
+	{
+		case true:
+			salida << "NO ES POSIBLE iniciar JUEGO" << endl;
+			break;
+		case false:
+			salida << "INICIANDO JUEGO: " << totalConcursantes(c)  << endl;
+			break;
+	}
 }
 
-void pca(ifstream& entrada, ofstream& salida){
-	salida << "pca" << endl;
+void pca(ifstream& entrada, ofstream& salida, concurso& c){
+
+	/*
+	 * Argumentos:
+	 * argumento[0]: clave de la pregunta
+	 * argumento[1]: tiempo
+	 * argumento[2]: respuesta
+	 */
+
+	char argumento[3][1000];
+	int i = 0;
+
+	while(i < 3){
+		entrada.getline(argumento[i],1000);
+		i++;
+	}
+
+	instante tiempo;
+	int horas;
+	int minutos;
+
+	separar(horas, minutos, argumento[1]);
+
+	crearInstante(tiempo, horas, minutos);
+
+	/*
+	 * Codigo utilizado en la funcion marcarTiempo en concurso.h
+	 * 0: puede responder
+	 * 1: no esta en la fase adecuada
+	 * 2: ronda vacia
+	 * 3: la clave de la pregunta no esta en el concurso
+	 * 4: ninguno de los anteriores
+	 */
+
+	switch(probarConcursanteActual(c, convertir(argumento[0]), tiempo, convertir(argumento[2])))
+	{
+		case 0:
+			salida << "+++ RESPONDE CONCURSANTE +++" << endl;
+			// Faltan cosas
+			break;
+		case 1:
+			salida << "PROBAR concursante DESCARTADO" << endl;
+			break;
+		case 2:
+			salida << "ronda VACIA" << endl;
+			break;
+		case 3:
+			salida << "PREGUNTA no encontrada: " << convertir(argumento) << endl;
+			break;
+		case 4:
+			salida << "RESPUESTA NO VALIDA" << endl;
+	}
 }
 
-void hg(ifstream& entrada, ofstream& salida){
-	salida << "hg" << endl;
+void hg(ifstream& entrada, ofstream& salida, concurso& c){
+	/*
+	 * Codigo utilizado en la funcion marcarTiempo en concurso.h
+	 * false: no hay ganadores
+	 * true: hay ganadores
+	 */
+
+	switch(hayGanadores(c))
+	{
+		case true:
+			salida << "<<< CONCURSANTES GANADORES >>>" << endl;
+			salida << listarConcursantes(c) << endl;
+			break;
+		case false:
+			salida << "SIN GANADORES"  << endl;
+			break;
+	}
 }
 
-void lt(ifstream& entrada, ofstream& salida){
-	salida << "lt" << endl;
+void lt(ifstream& entrada, ofstream& salida, concurso& c){
+	salida << listarConcurso(c) << endl;
 }
 
 void menu(){
   	char orden[100];
   	string salidaStr = "concursosalida.txt";
-  	ronda<string,participante> r;
-  	crear(r);
+  	concurso c;
+  	crearConcurso(c);
   	ifstream f;
   	ifstream preguntas;
   	ofstream salida(salidaStr);
@@ -234,49 +427,49 @@ void menu(){
   	while(!f.eof()){
 		f.getline(orden,100);
     		if(strcmp(orden,"ipa")==0){
-        		ipa(f,salida);
+        		ipa(f,salida,c);
     		}
     		else if(strcmp(orden,"bpa")==0){
-        		bpa(f,salida);
+        		bpa(f,salida,c);
     		}
     		else if(strcmp(orden,"mpa")==0){
-        		mpa(f,salida);
+        		mpa(f,salida,c);
     		}
     		else if(strcmp(orden,"ip")==0){
-        		ip(f,salida);
+        		ip(f,salida,c);
  		}
     		else if(strcmp(orden,"oc")==0){
- 			oc(f,salida);
+ 			oc(f,salida,c);
 		}
 		else if(strcmp(orden,"lp")==0){
-			lp(f,salida);
+			lp(f,salida,c);
 		}
 		else if(strcmp(orden,"bp")==0){
-			bp(f,salida);
+			bp(f,salida,c);
 		}
 		else if(strcmp(orden,"lc")==0){
-			lc(f,salida);
+			lc(f,salida,c);
 		}
 		else if(strcmp(orden,"mp")==0){
-			mp(f,salida);
+			mp(f,salida,c);
 		}
 		else if(strcmp(orden,"lr")==0){
-			lr(f,salida);
+			lr(f,salida,c);
 		}
 		else if(strcmp(orden,"ii")==0){
-			ii(f,salida);
+			ii(f,salida,c);
 		}
 		else if(strcmp(orden,"ij")==0){
-			ij(f,salida);
+			ij(f,salida,c);
 		}
 		else if(strcmp(orden,"pca")==0){
-			pca(f,salida);
+			pca(f,salid,c);
 		}
 		else if(strcmp(orden,"hg")==0){
-			hg(f,salida);
+			hg(f,salida,c);
 		}
 		else if(strcmp(orden,"lt")==0){
-			lt(f,salida);
+			lt(f,salida,c);
 		}
 	}
 }
