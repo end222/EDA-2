@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <string>
+#include <queue>
 #include "../clave/clave.h"
 #include "../instante/instante.h"
 #include "../pregunta/pregunta.h"
@@ -16,6 +17,7 @@ using namespace std;
 
 template <typename T1, typename T2, typename T3> struct terna;
 template <typename T1, typename T2, typename T3> struct cmt;
+template <typename T1, typename T2, typename T3> struct Nodo;
 // definir operaciones de agrupacion
 
 template <typename T1, typename T2, typename T3> void crear(cmt<T1, T2, T3>& c);
@@ -36,11 +38,18 @@ template <typename T1, typename T2, typename T3> bool existeSiguiente(cmt<T1, T2
 template <typename T1, typename T2, typename T3> bool siguiente(cmt<T1, T2, T3>& c, T1& k, T2& v, T3& t);
 
 template <typename T1, typename T2, typename T3> struct terna {
-    T1 k;
-    T2 v;
-    T3 t;
-    bool hayTiempo;
+	T1 k;
+	T2 v;
+	T3 t;
+	bool hayTiempo;
 };
+
+template <typename T1, typename T2, typename T3>  struct Nodo{
+	terna<T1, T2, T3> dato;
+	Nodo* izq;
+	Nodo* der;
+};
+
 template <typename T1, typename T2, typename T3> 
 struct cmt {
     friend void crear<T1, T2, T3>(cmt<T1, T2, T3>& c);
@@ -61,42 +70,50 @@ struct cmt {
     friend bool siguiente<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k, T2& v, T3& t);
 
 private:
-		terna<T1, T2, T3> dato;
-		cmt* izq;
-		cmt* der;
+	Nodo* abb;
+	Nodo* iterador;
+	int numElementos;
+	queue <terna* > l;
 };
-
-
 
 template <typename T1, typename T2, typename T3>
 void crear(cmt<T1,T2,T3>& c){
 	c=nullptr;
+	c.numElementos=0;
 }
-
 
 template <typename T1, typename T2, typename T3>
 bool esVacio(cmt<T1,T2,T3>& c){
-	return c==nullptr;
-	
+	return c==nullptr;	
+}
+
+bool existe_aux (Nodo* entrada, Nodo& salida, const T1& clave){
+	if (!esVacio(c)){
+		return true;
+	}
+	else{
+		if (k<c->entrada->dato.k){
+			return existe_aux(entrada->izq,salida,k);	
+		}
+		else if (k>entrada->dato.k){
+			return existe_aux(entrada->der,salida,k);	
+		}
+		else if (k==entrada->dato.k){
+			salida=entrada;
+			return true;
+		}
+	}
 }
 
 template <typename T1, typename T2, typename T3>
 bool existeClave(cmt<T1, T2, T3>& c, T1& k){
-	if (!esVacio(c)){
-		if (k<c->dato.k){
-			return existeClave(k->izq,k);	
-		}
-		else if (k>c->dato.k){
-			return existeClave(k->der,k);	
-		}
-		else if (k==c->dato.k){
-			return true;
-		}
-	}
-	else{
-		return false;
-	}
+	Nodo* aux; 
+	return (c.abb,aux,k);
 }
+
+template <typename T1, typename T2, typename T3>
+void introducir_aux (Nodo* entrada, Nodo& salida)
+
 template <typename T1, typename T2, typename T3>
 void introducir(cmt<T1, T2, T3>& c, T1& k, T2& v){
 	if (c==nullptr){
@@ -110,5 +127,43 @@ void introducir(cmt<T1, T2, T3>& c, T1& k, T2& v){
 		if (k<=aux.)
 	}
 }
+template <typename T1, typename T2, typename T3>
+void inOrden(Nodo* entrada, queue <terna* > l;){
+	bool error;
+	Nodo* ai;
+	Nodo* ad;
+	if (a!=nullptr){
+		ai=entrada->izq;
+		inOrden(entrada,l);
+		l.push(entrada->dato);
+		ad=entrada->der;
+		inOrden(entrada,l);
+		
+	}
+}
+
+template <typename T1, typename T2, typename T3>
+void iniciarIterador(cmt<T1, T2, T3>& c){
+	inOrden(c,c.l);
+	c.iterador=l.pop();
+}
+
+template <typename T1, typename T2, typename T3>
+bool siguiente(cmt<T1, T2, T3>& c, T1& k, T2& v, T3& t){
+	k=c.iterador->dato.k;
+	v=c.iterador->dato.v;
+	if (c.iterador->dato.hayTiempo){
+		t=c.iterador->dato.t;
+	}
+	if (existeSiguiente(){
+		c.iterador=c.l.pop();
+	} 
+}
+
+template <typename T1, typename T2, typename T3> 
+bool existeSiguiente(cmt<T1, T2, T3>& c){
+	return (c.l.size()>0);
+}
+
 	
 #endif  // fin de cmt
