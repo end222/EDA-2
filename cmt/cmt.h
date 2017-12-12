@@ -70,10 +70,10 @@ struct cmt {
     friend bool siguiente<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k, T2& v, T3& t);
 
 private:
-	Nodo* abb;
-	Nodo* iterador;
+	Nodo<T1, T2, T3>* abb;
+	Nodo<T1, T2, T3>* iterador;
 	int numElementos;
-	queue <terna* > l;
+	queue <terna<T1, T2, T3>* > l;
 };
 
 template <typename T1, typename T2, typename T3>
@@ -86,19 +86,19 @@ template <typename T1, typename T2, typename T3>
 bool esVacio(cmt<T1,T2,T3>& c){
 	return c==nullptr;	
 }
-
-bool existe_aux (Nodo* entrada, Nodo& salida, const T1& clave){
-	if (!esVacio(c)){
+template <typename T1, typename T2, typename T3>
+bool existe_aux (Nodo<T1,T2,T3>* entrada, Nodo<T1,T2,T3>& salida, const T1& clave){
+	if (entrada==nullptr){
 		return true;
 	}
 	else{
-		if (k<c->entrada->dato.k){
-			return existe_aux(entrada->izq,salida,k);	
+		if (clave<entrada->dato.k){
+			return existe_aux(entrada->izq,salida,clave);	
 		}
-		else if (k>entrada->dato.k){
-			return existe_aux(entrada->der,salida,k);	
+		else if (clave>entrada->dato.k){
+			return existe_aux(entrada->der,salida,clave);	
 		}
-		else if (k==entrada->dato.k){
+		else if (clave==entrada->dato.k){
 			salida=entrada;
 			return true;
 		}
@@ -107,32 +107,25 @@ bool existe_aux (Nodo* entrada, Nodo& salida, const T1& clave){
 
 template <typename T1, typename T2, typename T3>
 bool existeClave(cmt<T1, T2, T3>& c, T1& k){
-	Nodo* aux; 
+	Nodo<T1,T2,T3>* aux; 
 	return (c.abb,aux,k);
 }
 
 template <typename T1, typename T2, typename T3>
-void introducir_aux (Nodo* entrada, Nodo& salida)
+void introducir_aux (Nodo<T1,T2,T3>* entrada, Nodo<T1,T2,T3>& salida){
+	
+}
 
 template <typename T1, typename T2, typename T3>
 void introducir(cmt<T1, T2, T3>& c, T1& k, T2& v){
-	if (c==nullptr){
-		new typename cmt<T1,T2> aux;
-		aux.dato.k=k;
-		aux.dato.v=v;
-		aux.der=nullptr;
-		aux.izq=nullptr;
-	}
-	else {
-		if (k<=aux.)
-	}
+	introducir_aux(c->abb);
 }
 template <typename T1, typename T2, typename T3>
-void inOrden(Nodo* entrada, queue <terna* > l;){
+void inOrden(Nodo<T1,T2,T3>* entrada, queue <terna<T1,T2,T3>* > l){
 	bool error;
-	Nodo* ai;
-	Nodo* ad;
-	if (a!=nullptr){
+	Nodo<T1,T2,T3>* ai;
+	Nodo<T1,T2,T3>* ad;
+	if (entrada!=nullptr){
 		ai=entrada->izq;
 		inOrden(entrada,l);
 		l.push(entrada->dato);
@@ -145,7 +138,7 @@ void inOrden(Nodo* entrada, queue <terna* > l;){
 template <typename T1, typename T2, typename T3>
 void iniciarIterador(cmt<T1, T2, T3>& c){
 	inOrden(c,c.l);
-	c.iterador=l.pop();
+	c.iterador=c.l.pop();
 }
 
 template <typename T1, typename T2, typename T3>
@@ -155,7 +148,7 @@ bool siguiente(cmt<T1, T2, T3>& c, T1& k, T2& v, T3& t){
 	if (c.iterador->dato.hayTiempo){
 		t=c.iterador->dato.t;
 	}
-	if (existeSiguiente(){
+	if (existeSiguiente(c){
 		c.iterador=c.l.pop();
 	} 
 }
