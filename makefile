@@ -3,7 +3,7 @@
 # Daniel Naval
 # Fichero: makefile
 
-CC = clang++
+CC = g++
 
 main: cmt/cmt.h concurso/concurso.h ronda/ronda.h clave/clave.h instante/instante.h pregunta/pregunta.h practica2.cpp alias.o participante.o 
 	$(CC) cmt/cmt.h concurso/concurso.h ronda/ronda.h clave/clave.h instante/instante.h \

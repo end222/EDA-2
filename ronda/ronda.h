@@ -24,10 +24,10 @@ template<typename T1, typename T2> void crear(ronda<T1,T2>& r);
 template<typename T1, typename T2> int cardinal(ronda<T1,T2>& r);
 template<typename T1, typename T2> bool esVacio(ronda<T1,T2>& r);
 template<typename T1, typename T2> bool pertenece(ronda<T1,T2>& r,T1& c);
-template<typename T1, typename T2> void obtenerValor(ronda<T1,T2>& r,T1& c, T2& v);
+template<typename T1, typename T2> bool obtenerValor(ronda<T1,T2>& r,T1& c, T2& v);
 template<typename T1, typename T2> bool enSeleccion(ronda<T1,T2>& r);
-template<typename T1, typename T2> bool annadir(ronda<T1,T2>& r,T1& c,T2& v);
-template<typename T1, typename T2> bool quitar (ronda<T1,T2>& r,T1& c);
+template<typename T1, typename T2> int annadir(ronda<T1,T2>& r,T1& c,T2& v);
+template<typename T1, typename T2> int quitar (ronda<T1,T2>& r,T1& c);
 template<typename T1, typename T2> void cerrarInscripcion(ronda<T1,T2>& r);
 template<typename T1, typename T2> bool pasarTurno(ronda<T1,T2>& r);
 template<typename T1, typename T2> bool obtenerCandidatoSuClave(ronda<T1,T2>& r,T1& c);
@@ -50,10 +50,10 @@ struct ronda{
     friend int cardinal<T1,T2>(ronda<T1,T2>& r);
     friend bool esVacio<T1,T2>(ronda<T1,T2>& r);
     friend bool pertenece<T1,T2>(ronda<T1,T2>& r,T1& c);
-    friend void obtenerValor<T1,T2>(ronda<T1,T2>& r,T1& c, T2& v);
+    friend bool obtenerValor<T1,T2>(ronda<T1,T2>& r,T1& c, T2& v);
     friend bool enSeleccion<T1,T2>(ronda<T1,T2>& r);
-    friend bool annadir<T1,T2>(ronda<T1,T2>& r,T1& c,T2& v);
-    friend bool quitar<T1,T2>(ronda<T1,T2>& r,T1& c);
+    friend int annadir<T1,T2>(ronda<T1,T2>& r,T1& c,T2& v);
+    friend int quitar<T1,T2>(ronda<T1,T2>& r,T1& c);
     friend void cerrarInscripcion<T1,T2>(ronda<T1,T2>& r);
     friend bool pasarTurno<T1,T2>(ronda<T1,T2>& r);
     friend bool obtenerCandidatoSuClave<T1,T2>(ronda<T1,T2>& r,T1& c);
@@ -125,7 +125,7 @@ bool pertenece(ronda<T1,T2>& r,T1& c){
  * Parcial: la operación no está definida si c no está en r.
  */
 template<typename T1, typename T2>
-void obtenerValor(ronda<T1,T2>& r,T1& c, T2& v){
+bool obtenerValor(ronda<T1,T2>& r,T1& c, T2& v){
     iniciarIterador(r);
     bool encontrado=false;
     T1 laClave;
@@ -138,6 +138,7 @@ void obtenerValor(ronda<T1,T2>& r,T1& c, T2& v){
             v=elValor;
         }
     }
+    return encontrado;
 }
 /* Devuelve verdad si y sólo si r está en estado de Selección.*/
 template<typename T1, typename T2>
@@ -150,7 +151,15 @@ bool enSeleccion(ronda<T1,T2>& r){
  * Parcial: la operación no está definida si c no está en r. 
  */
 template<typename T1, typename T2>
-bool annadir(ronda<T1,T2>& r,T1& c,T2& v){
+int annadir(ronda<T1,T2>& r,T1& c,T2& v){
+    
+    /*
+     * Codigo de error utilizado
+     * 0: no existia una pregunta con la clave de la que se quiere introducir en la coleccion
+     * 1: si que existia
+     * 2: se descarta la insercion
+     */
+
     typename ronda<T1,T2>::Nodo* aux;
     typename ronda<T1,T2>::Nodo unaCelda;
     if (!enSeleccion(r)){
@@ -160,7 +169,7 @@ bool annadir(ronda<T1,T2>& r,T1& c,T2& v){
             r.primero->v=v;
             r.primero->siguiente=nullptr;
             r.numDatos=1;
-            
+	    return 0;
         }
         else if(c<(r.primero->c)) {
             aux=r.primero;
@@ -169,7 +178,7 @@ bool annadir(ronda<T1,T2>& r,T1& c,T2& v){
             r.primero->v=v;
             r.primero->siguiente=aux;
             r.numDatos=r.numDatos+1;            
-            
+            return 0;
         }
         else{
             aux=r.primero;
@@ -184,69 +193,76 @@ bool annadir(ronda<T1,T2>& r,T1& c,T2& v){
                 *aux=unaCelda;
                 aux->siguiente=nuevo;
                 r.numDatos=r.numDatos+1;        
+		return 0;
             }
             else{
                 if(c==aux->c){
                     aux->v=v;
+		    return 1;
                 }
                 else{
-                     aux->siguiente=new typename ronda<T1,T2>::Nodo;
-                     aux=aux->siguiente;
-                     aux->c=c;
-                     aux->v=v;
-                     aux->siguiente=nullptr;
-                    r.numDatos=r.numDatos+1;                        
+                     	aux->siguiente=new typename ronda<T1,T2>::Nodo;
+                     	aux=aux->siguiente;
+                     	aux->c=c;
+                     	aux->v=v;
+			aux->siguiente=nullptr;
+                    	r.numDatos=r.numDatos+1;                        
+			return 0;
                 }
             }
         }
-        return true;
     }
     else{
-        return false;
+        return 2;
     }
 }
 /* Si c está en r, devuelve una ronda igual a la resultante de borrar en r el par con clave c si c no está en r devuelve una ronda igual a r.
  * Parcial: la operación no está definida si enSelección?(r).*/
 template<typename T1, typename T2>
-bool quitar(ronda<T1,T2>& r,T1& c){
+int quitar(ronda<T1,T2>& r,T1& c){
 	if (!enSeleccion(r)){
-		 typename ronda<T1,T2>::Nodo* aux1;
-		 typename ronda<T1,T2>::Nodo* aux2;
-		 bool parar;
-		 if (r.primero!=nullptr){
-			 if((r.primero->c)<=c){
+		typename ronda<T1,T2>::Nodo* aux1;
+		typename ronda<T1,T2>::Nodo* aux2;
+		bool parar;
+		int devolver = 0;
+		if (r.primero!=nullptr){
+			if((r.primero->c)<=c){
 				if ((r.primero->c)==c){
 					aux1=r.primero;
 					r.primero = r.primero->siguiente;
 					delete (aux1);
 					r.numDatos=r.numDatos-1;
+					devolver = 0;
 				}
 				else{
-					 parar=false;
-					 aux1=r.primero->siguiente;
-					 aux2=r.primero;
-					 while(aux1!=nullptr && !parar){
-						 if(c<aux1->c){
-							 parar=true;
-						 }
-						 else if(c==aux1->c){
-							 aux2->siguiente=aux1->siguiente;
-							 delete (aux1);
-							 parar=true;
-							 r.numDatos=r.numDatos-1;
-						 }
+					parar=false;
+					aux1=r.primero->siguiente;
+					aux2=r.primero;
+					while(aux1!=nullptr && !parar){
+						if(c<aux1->c){
+							parar=true;
+							devolver = 1;
+						}
+						else if(c==aux1->c){
+							aux2->siguiente=aux1->siguiente;
+							delete (aux1);
+							parar=true;
+							r.numDatos=r.numDatos-1;
+							devolver = 0;
+						}
 						else{
 							aux2=aux1;
 							aux1=aux1->siguiente;
-						 }
-					 }
-				 }
-			 }
-		 }
-	 return true;
+						}
+					}
+				}
+			}
+			else devolver = 1;
+		}
+	return devolver;
 	}
 	else{
-		return false;
+		return 2;
 	}
 }
 /* Si enSelección?(r), devuelve una ronda igual a r si no enSelección?(r), devuelve una ronda igual a la resultante de poner r en estado de Selección y 

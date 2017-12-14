@@ -15,7 +15,7 @@ using namespace std;
 struct participante;
 
 string generaCadena(participante& p);
-void crearParticipante(participante& p,int datos);
+void crearParticipante(participante& p,string datos);
 void sumarAcierto(participante& p);
 void sumarFallo(participante& p);
 void sumarIntento(participante& p);

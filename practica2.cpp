@@ -17,6 +17,8 @@
 #include <fstream>
 #include <string>
 
+int convertir(char* cadena);
+
 void separar(int& horas, int& minutos, char* tiempo){
 	char horasStr[2];
 	horasStr[0] = tiempo[0];
@@ -70,7 +72,7 @@ void ip(ifstream& entrada, ofstream& salida, concurso& c){
 	 */	
 
 	crearPregunta(question, argumento[1], argumento[2], argumento[3], convertir(argumento[4]));
-	switch(anadirPregunta(c, convertir(argumento[0]), question)
+	switch(anadirPregunta(c, convertir(argumento[0]), question))
 	{		
 		case 0:
 			salida << "INSERCION REALIZADA: " << flush;
@@ -199,7 +201,7 @@ void ipa(ifstream& entrada, ofstream& salida, concurso& c){
 	 * 2: no es posible introducir al participante
 	 */
 
-	switch(anadirConcursante(c, argumentos[0], p))
+	switch(anadirConcursante(c, argumento[0], p))
 	{
 		case 1:
 			salida << "participante INSCRITO: " << flush;
@@ -219,7 +221,7 @@ void bpa(ifstream& entrada, ofstream& salida, concurso& c){
 	entrada.getline(argumento,1000);
 
 	/*
-	 * argumento[0]: alias
+	 * argumento: alias
 	 */
 	
 	/*
@@ -229,7 +231,7 @@ void bpa(ifstream& entrada, ofstream& salida, concurso& c){
 	 * 2: no es posible borrar al participante
 	 */
 
-	switch(borrarConcursante(c, p))
+	switch(borrarConcursante(c, argumento))
 	{
 		case 0:
 			salida << "participante NO ENCONTRADO: " << argumento << endl;
@@ -247,9 +249,10 @@ void bpa(ifstream& entrada, ofstream& salida, concurso& c){
 void mpa(ifstream& entrada, ofstream& salida, concurso& c){
 	char argumento[1000];
 	entrada.getline(argumento,1000);
+	participante p;
 
 	/*
-	 * argumento[0]: alias
+	 * argumento: alias
 	 */
 	
 	/*
@@ -258,7 +261,7 @@ void mpa(ifstream& entrada, ofstream& salida, concurso& c){
 	 * false: ya existia el participante
 	 */
 
-	switch(borrarConcursante(c, p))
+	switch(obtenerInfoConcursante(c, argumento), p)
 	{
 		case true:
 			salida << "participante DESCONOCIDO: " << argumento << endl;
@@ -278,18 +281,18 @@ void oc(ifstream& entrada, ofstream& salida, concurso& c){
 	 * 2: consulta descartada por el estado de la ronda
 	 */
 
-	participante p;
+	string p;
 
 	switch(obtenerConcursanteActual(c, p))
 	{
 		case 0:
-			salida << "CANDIDATO a evaluar: " << argumento << endl;
+			salida << "CANDIDATO a evaluar: " << endl;
 			break;
 		case 1:
-			salida << "ronda VACIA: " << argumento << endl;
+			salida << "ronda VACIA: " << endl;
 			break;
 		case 2:
-			salida << "CONSULTA candidato DESCARTADA: " << argumento << endl;
+			salida << "CONSULTA candidato DESCARTADA: " << endl;
 			break;
 	}
 	// Falta la info del participante
@@ -463,7 +466,7 @@ void menu(){
 			ij(f,salida,c);
 		}
 		else if(strcmp(orden,"pca")==0){
-			pca(f,salid,c);
+			pca(f,salida,c);
 		}
 		else if(strcmp(orden,"hg")==0){
 			hg(f,salida,c);
