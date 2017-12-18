@@ -111,17 +111,18 @@ bool existeClave(cmt<T1, T2, T3>& c, T1& k){
 
 template <typename T1, typename T2, typename T3>
 bool introducir_aux (Nodo<T1,T2,T3>* entrada, T1& k, T2& v){
+	bool error;
 	if (entrada==nullptr){
 		entrada=new Nodo<T1,T2,T3>;
 		entrada->dato.k=k;
 		entrada->dato.v=v;
 		entrada->der=nullptr;
 		entrada->izq=nullptr;
-		return 0;
+		error = 0;
 	}
 	else if (entrada->dato.k==k){
 		entrada->dato.v=v;
-		return 1;
+		error = 1;
 	}
 	else{
 		if(k<=entrada->dato.k){
@@ -131,12 +132,14 @@ bool introducir_aux (Nodo<T1,T2,T3>* entrada, T1& k, T2& v){
 			introducir_aux(entrada->der,k,v);
 		}
 	}
+	return error;
 }
 
 template <typename T1, typename T2, typename T3>
 bool introducir(cmt<T1, T2, T3>& c, T1& k, T2& v){
 	bool control;
-	if (control=introducir_aux(c.abb,k,v)){
+	control=introducir_aux(c.abb,k,v);
+	if (control){
 		c.numElementos++;
 	}
 	return control;
