@@ -1,0 +1,11 @@
+********** ESTADO del CONCURSO **********
+FASE: Documentacion
+LIMITES maximos-> Pases: 2 Fallos: 2 Ganadores: 1
+-*- LISTADO DE CONCURSANTES -*-
+TOTAL concursantes: 0
+-*-*-*-
+--- LISTADO DE PREGUNTAS ---
+TOTAL preguntas: 0
+------
+******************************
+INSERCION REALIZADA: 7:::-

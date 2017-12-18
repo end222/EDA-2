@@ -84,7 +84,7 @@ void ip(ifstream& entrada, ofstream& salida, concurso& c){
 			salida << "INSERCION DESCARTADA: " << flush;
 			break;	
 	}
-	// Falta mostrar la info de la pregunta
+	salida << argumento[0] << ":::-" << endl;
 }
 
 /*
@@ -421,7 +421,7 @@ void menu(){
   	char orden[100];
   	string salidaStr = "concursosalida.txt";
   	concurso c;
-  	crearConcurso(10,10,10,c);
+  	crearConcurso(2,2,1,c);
   	ifstream f;
   	ifstream preguntas;
   	ofstream salida(salidaStr);

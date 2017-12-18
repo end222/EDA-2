@@ -306,12 +306,22 @@ int probarConcursanteActual(concurso& c, int clave, instante t, int respuesta){
 	}
 }
 
-string listarPreguntas(concurso& c){
-	return listar(c.grupo);
+string listarConcursantes(concurso& c){
+	string texto = "-*- LISTADO DE CONCURSANTES -*-\n";
+	int numero = totalConcursantes(c);
+	texto = texto + "TOTAL concursantes: " + to_string(numero) + "\n";
+	texto = texto + listar(c.grupo);
+	texto = texto + "-*-*-*-\n";
+	return texto;
 }
 
-string listarConcursantes(concurso& c){
-	return listar(c.round);
+string listarPreguntas(concurso& c){
+	string texto = "--- LISTADO DE PREGUNTAS ---\n";
+	int numero = totalPreguntas(c);
+	texto = texto + "TOTAL preguntas: " + to_string(numero) + "\n";
+	texto = texto + listar(c.round);
+	texto = texto + "------\n";
+	return texto;
 }
 
 string listarConcurso(concurso& c){
@@ -327,7 +337,7 @@ string listarConcurso(concurso& c){
 		texto = texto + "FASE: Juego\n";
 	}
 	texto = texto + "LIMITES maximos-> Pases: " + to_string(c.maximoPases) + " Fallos: " + to_string(c.maximoFallos);
-	texto = texto + " Ganadores: " + to_string(c.maximoNumGanadores);
+	texto = texto + " Ganadores: " + to_string(c.maximoNumGanadores) + "\n";
 	if(c.enJ){
 		texto = texto + "JUGANDO concursante: ";
 		string concursante;
@@ -339,8 +349,8 @@ string listarConcurso(concurso& c){
 		}
 		texto = texto + "\n";
 	}
-	texto = texto + listarPreguntas(c);
 	texto = texto + listarConcursantes(c);
+	texto = texto + listarPreguntas(c);
 	texto = texto + "******************************";
 	return texto;
 }
