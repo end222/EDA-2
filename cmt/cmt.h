@@ -85,10 +85,10 @@ bool esVacio(cmt<T1,T2,T3>& c){
 	return c.abb==nullptr;	
 }
 template <typename T1, typename T2, typename T3>
-bool existe_aux (Nodo<T1,T2,T3>* entrada, Nodo<T1,T2,T3>* salida, const T1& clave){
+bool existe_aux (Nodo<T1,T2,T3>* entrada, Nodo<T1,T2,T3>* & salida, const T1& clave){
 	bool error;
 	if (entrada==nullptr){
-		error = true;
+		error = true; //Ha ocurrido un problema
 	}
 	else{
 		if (clave<entrada->dato.k){
@@ -101,6 +101,9 @@ bool existe_aux (Nodo<T1,T2,T3>* entrada, Nodo<T1,T2,T3>* salida, const T1& clav
 			salida=entrada;
 			error = true;
 		}
+		else{
+			return false;
+		}
 	}
 	return error;
 }
@@ -112,7 +115,7 @@ bool existeClave(cmt<T1, T2, T3>& c, T1& k){
 }
 
 template <typename T1, typename T2, typename T3>
-bool introducir_aux (Nodo<T1,T2,T3>* entrada, T1& k, T2& v){
+bool introducir_aux (Nodo<T1,T2,T3>* & entrada, T1& k, T2& v){
 	bool error;
 	if (entrada==nullptr){
 		entrada=new Nodo<T1,T2,T3>;
@@ -141,9 +144,7 @@ template <typename T1, typename T2, typename T3>
 bool introducir(cmt<T1, T2, T3>& c, T1& k, T2& v){
 	bool control;
 	control=introducir_aux(c.abb,k,v);
-	if (control){
-		c.numElementos++;
-	}
+	c.numElementos++;
 	return control;
 }
 template <typename T1, typename T2, typename T3>
@@ -206,6 +207,7 @@ bool marcarTiempo(cmt<T1, T2, T3>& c, T1& k, T3& t){
 	fase = existe_aux(c.abb,testigo,k);
 	if (fase){
 		testigo->dato.t=t;
+		testigo->dato.hayTiempo=true;
 		return 0; //Ha ido todo correctamente :)
 	}
 	
