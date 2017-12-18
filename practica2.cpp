@@ -366,7 +366,7 @@ void pca(ifstream& entrada, ofstream& salida, concurso& c){
 	crearInstante(tiempo, horas, minutos);
 
 	/*
-	 * Codigo utilizado en la funcion marcarTiempo en concurso.h
+	 * Codigo utilizado en concurso.h
 	 * 0: puede responder
 	 * 1: no esta en la fase adecuada
 	 * 2: ronda vacia
