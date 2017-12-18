@@ -123,6 +123,7 @@ bool introducir_aux (Nodo<T1,T2,T3>* & entrada, T1& k, T2& v){
 		entrada->dato.v=v;
 		entrada->der=nullptr;
 		entrada->izq=nullptr;
+		entrada->dato.hayTiempo=false;
 		error = 0;
 	}
 	else if (entrada->dato.k==k){
@@ -130,7 +131,7 @@ bool introducir_aux (Nodo<T1,T2,T3>* & entrada, T1& k, T2& v){
 		error = 1;
 	}
 	else{
-		if(k<=entrada->dato.k){
+		if(k<=(entrada->dato.k)){
 			introducir_aux(entrada->izq,k,v);
 		}
 		else{
@@ -148,7 +149,7 @@ bool introducir(cmt<T1, T2, T3>& c, T1& k, T2& v){
 	return control;
 }
 template <typename T1, typename T2, typename T3>
-void inOrden(Nodo<T1,T2,T3>* entrada, queue <Nodo<T1,T2,T3>* > l){
+void inOrden(Nodo<T1,T2,T3>* entrada, queue <Nodo<T1,T2,T3>* > & l){
 	Nodo<T1,T2,T3>* ai;
 	Nodo<T1,T2,T3>* ad;
 	if (entrada!=nullptr){
@@ -282,10 +283,10 @@ string listar(cmt<T1, T2, T3>& c){
 	while (existeSiguiente(c)){
 		siguiente(c,clave,valor,tiempo);
 		if(tieneTiempo(c,clave)){
-			escribe=corcheteA+generaCadena(clave)+dosPuntos+dosPuntos+dosPuntos+generaCadena(tiempo)+'\n'+generaCadena(valor)+corcheteC+'\n';
+			escribe=escribe+corcheteA+generaCadena(clave)+dosPuntos+dosPuntos+dosPuntos+generaCadena(tiempo)+'\n'+generaCadena(valor)+corcheteC+'\n';
 		}
 		else{
-			escribe=corcheteA+generaCadena(clave)+dosPuntos+dosPuntos+dosPuntos+'-'+'\n'+generaCadena(valor)+corcheteC+'\n';
+			escribe=escribe+corcheteA+generaCadena(clave)+dosPuntos+dosPuntos+dosPuntos+'-'+'\n'+generaCadena(valor)+corcheteC+'\n';
 		}
 	}
 	return escribe;
@@ -304,9 +305,9 @@ bool siguiente(cmt<T1, T2, T3>& c, T1& k, T2& v, T3& t){
 		t=c.iterador->dato.t;
 	}
 	if (existeSiguiente(c)){
-		c.iterador=c.l.front();
 		c.l.pop();
-		return true;
+		c.iterador=c.l.front();
+		return true; // Se ha podido pasar al siguiente ya que existe un siguiente
 	}
 	else{
 		return false;
