@@ -261,7 +261,7 @@ void mpa(ifstream& entrada, ofstream& salida, concurso& c){
 	 * false: ya existia el participante
 	 */
 
-	switch(obtenerInfoConcursante(c, argumento), p)
+	switch(obtenerInfoConcursante(c, argumento, p))
 	{
 		case true:
 			salida << "participante DESCONOCIDO: " << argumento << endl;
@@ -387,7 +387,7 @@ void pca(ifstream& entrada, ofstream& salida, concurso& c){
 			salida << "ronda VACIA" << endl;
 			break;
 		case 3:
-			salida << "PREGUNTA no encontrada: " << convertir(argumento) << endl;
+			salida << "PREGUNTA no encontrada: " << convertir(argumento[0]) << endl;
 			break;
 		case 4:
 			salida << "RESPUESTA NO VALIDA" << endl;
@@ -421,7 +421,7 @@ void menu(){
   	char orden[100];
   	string salidaStr = "concursosalida.txt";
   	concurso c;
-  	crearConcurso(c);
+  	crearConcurso(10,10,10,c);
   	ifstream f;
   	ifstream preguntas;
   	ofstream salida(salidaStr);

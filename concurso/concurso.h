@@ -129,7 +129,7 @@ bool enJuego(concurso& c){
 
 int anadirPregunta(concurso& c, int clave, pregunta p){
 	if(enDocumentacion(c)){
-		return introducir(c.grupo,clave,pregunta);
+		return introducir(c.grupo,clave,p);
 	}
 	else{
 		return 2;
@@ -167,7 +167,7 @@ int obtenerUltimoUsoPregunta(concurso& c, int clave, instante& t){
 	 * 1: no tiene tiempo
 	 * 2: no existe
 	 */
-	return obtenerTiempo(concurso& c, clave, t);
+	return obtenerTiempo(c.grupo, clave, t);
 }
 
 bool marcarPregunta(concurso& c, int clave, instante t){
@@ -179,6 +179,7 @@ bool iniciarInscripcion(concurso& c){
 		c.enDoc = false;
 		c.enInsc = true;
 		return true;
+	}
 	else{
 		return false;
 	}
@@ -205,7 +206,7 @@ int totalConcursantes(concurso& c){
 }
 
 bool iniciarJuego(concurso c){
-	if(enInscripcion(c) && totalConcursantes(c)>máximoNúmeroGanadores(c)){
+	if(enInscripcion(c) && totalConcursantes(c)>maximoNumeroGanadores(c)){
 		c.enJ = true;
 		c.enInsc = false;
 		return true;
@@ -216,7 +217,7 @@ bool iniciarJuego(concurso c){
 }
 
 bool existeConcursanteActual(concurso& c){
-	if(enjuego(c) && totalConcursantes(c)>0){
+	if(enJuego(c) && totalConcursantes(c)>0){
 		return true;
 	}
 	else{
@@ -229,12 +230,14 @@ int obtenerConcursanteActual(concurso& c, string& concursante){
 		if(totalConcursantes(c)>0){
 			obtenerCandidatoSuClave(c.round,concursante);
 			return 2; // Se consigue obtener
+		}
 		else{
 			return 1; // No hay concursantes
 		}
 	}
 	else{
 		return 0; // No esta en juego
+	}
 }
 
 bool hayGanadores(concurso c){
@@ -261,10 +264,10 @@ string listarConcursantes(concurso& c){
 string listarConcurso(concurso& c){
 	string texto;
 	texto = "********** ESTADO del CONCURSO **********\n";
-	if(enDoc){
+	if(c.enDoc){
 		texto = texto + "FASE: Documentacion\n";
 	}
-	else if(enInsc){
+	else if(c.enInsc){
 		texto = texto + "FASE: Inscripcion\n";
 	}
 	else {
@@ -272,7 +275,7 @@ string listarConcurso(concurso& c){
 	}
 	texto = texto + "LIMITES maximos-> Pases: " + to_string(c.maximoPases) + " Fallos: " + to_string(c.maximoFallos);
 	texto = texto + " Ganadores: " + to_string(c.maximoNumGanadores);
-	if(enJ){
+	if(c.enJ){
 		texto = texto + "JUGANDO concursante: ";
 		string concursante;
 		if(obtenerConcursanteActual(c, concursante)==2){

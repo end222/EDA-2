@@ -71,7 +71,7 @@ private:
 	Nodo<T1, T2, T3>* abb;
 	Nodo<T1, T2, T3>* iterador;
 	int numElementos;
-	queue <terna<T1, T2, T3>* > l;
+	queue <Nodo<T1, T2, T3>* > l;
 };
 
 template <typename T1, typename T2, typename T3>
@@ -112,7 +112,7 @@ bool existeClave(cmt<T1, T2, T3>& c, T1& k){
 template <typename T1, typename T2, typename T3>
 bool introducir_aux (Nodo<T1,T2,T3>* entrada, T1& k, T2& v){
 	if (entrada==nullptr){
-		entrada=new typename cmt<T1,T2,T3>::Nodo;
+		entrada=new Nodo<T1,T2,T3>;
 		entrada->dato.k=k;
 		entrada->dato.v=v;
 		entrada->der=nullptr;
@@ -125,10 +125,10 @@ bool introducir_aux (Nodo<T1,T2,T3>* entrada, T1& k, T2& v){
 	}
 	else{
 		if(k<=entrada->dato.k){
-			introducir_aux(entrada->izq);
+			introducir_aux(entrada->izq,k,v);
 		}
 		else{
-			introducir_aux(entrada->der);
+			introducir_aux(entrada->der,k,v);
 		}
 	}
 }
@@ -142,14 +142,14 @@ bool introducir(cmt<T1, T2, T3>& c, T1& k, T2& v){
 	return control;
 }
 template <typename T1, typename T2, typename T3>
-void inOrden(Nodo<T1,T2,T3>* entrada, queue <terna<T1,T2,T3>* > l){
+void inOrden(Nodo<T1,T2,T3>* entrada, queue <Nodo<T1,T2,T3>* > l){
 	bool error;
 	Nodo<T1,T2,T3>* ai;
 	Nodo<T1,T2,T3>* ad;
 	if (entrada!=nullptr){
 		ai=entrada->izq;
 		inOrden(entrada,l);
-		l.push(entrada->dato);
+		l.push(entrada);
 		ad=entrada->der;
 		inOrden(entrada,l);
 		
@@ -173,7 +173,7 @@ bool obtenerDato(cmt<T1, T2, T3>& c, T1& k, T2& v){
 	bool fase;
 	Nodo<T1, T2, T3>* testigo;
 	fase = existe_aux(c.abb,testigo,k);
-	v=testigo->dato;
+	v=testigo->dato.v;
 	return fase;
 }
 
@@ -211,7 +211,7 @@ bool marcarTiempo(cmt<T1, T2, T3>& c, T1& k, T3& t){
 }
 template <typename T1, typename T2, typename T3> 
 void max(Nodo<T1,T2,T3>* entrada, T1& clave){
-	if (entrada.der==nullptr){
+	if (entrada->der==nullptr){
 		clave=entrada->dato.k;
 	}
 	else{
@@ -236,8 +236,9 @@ int borrar_aux (Nodo<T1,T2,T3>* entrada, T1& k){
 				return 0; //Todo correcto
 			}
 			else{
-				entrada->dato.k=max(entrada->izq);
-				borrar(entrada->izq,entrada->dato.k);
+				max(entrada->izq,k);
+				entrada->dato.k=k;
+				borrar_aux(entrada->izq,entrada->dato.k);
 			}
 		}
 	
@@ -249,7 +250,8 @@ int borrar_aux (Nodo<T1,T2,T3>* entrada, T1& k){
 template <typename T1, typename T2, typename T3> 
 int borrar(cmt<T1, T2, T3>& c, T1& k){
 	int control;
-	if (borrar=borrar_aux(c.abb,k)==0){
+	control = borrar_aux(c.abb,k);
+	if (control==0){
 		c.numElementos--;
 	}
 	return control;
@@ -282,8 +284,9 @@ string listar(cmt<T1, T2, T3>& c){
 }
 template <typename T1, typename T2, typename T3>
 void iniciarIterador(cmt<T1, T2, T3>& c){
-	inOrden(c,c.l);
-	c.iterador=c.l.pop();
+	inOrden(c.abb,c.l);
+	c.iterador=c.l.front();
+	c.l.pop();
 }
 
 template <typename T1, typename T2, typename T3>
@@ -294,7 +297,8 @@ bool siguiente(cmt<T1, T2, T3>& c, T1& k, T2& v, T3& t){
 		t=c.iterador->dato.t;
 	}
 	if (existeSiguiente(c)){
-		c.iterador=c.l.pop();
+		c.iterador=c.l.front();
+		c.l.pop();
 		return true;
 	}
 	else{
