@@ -162,58 +162,53 @@ int annadir(ronda<T1,T2>& r,T1& c,T2& v){
 
     typename ronda<T1,T2>::Nodo* aux;
     typename ronda<T1,T2>::Nodo unaCelda;
-    if (!enSeleccion(r)){
-        if (r.primero==nullptr){
-            r.primero=new typename ronda<T1,T2>::Nodo;
-            r.primero->c=c;
-            r.primero->v=v;
-            r.primero->siguiente=nullptr;
-            r.numDatos=1;
+    if (r.primero==nullptr){
+        r.primero=new typename ronda<T1,T2>::Nodo;
+        r.primero->c=c;
+        r.primero->v=v;
+        r.primero->siguiente=nullptr;
+        r.numDatos=1;
+	return 0;
+    }
+    else if(c<(r.primero->c)) {
+        aux=r.primero;
+        r.primero=new typename ronda<T1,T2>::Nodo;
+        r.primero->c=c;
+        r.primero->v=v;
+        r.primero->siguiente=aux;
+        r.numDatos=r.numDatos+1;            
+        return 0;
+    }  
+    else{
+        aux=r.primero;
+        while((aux->c)<c && aux->siguiente!=nullptr){
+            aux=aux->siguiente;
+        }
+        if(c<aux->c){
+            unaCelda.c=c;
+            unaCelda.v=v;
+	    typename ronda<T1,T2>::Nodo* nuevo= new typename ronda<T1,T2>::Nodo;			
+            *nuevo=*aux;
+            *aux=unaCelda;
+            aux->siguiente=nuevo;
+            r.numDatos=r.numDatos+1;        
 	    return 0;
         }
-        else if(c<(r.primero->c)) {
-            aux=r.primero;
-            r.primero=new typename ronda<T1,T2>::Nodo;
-            r.primero->c=c;
-            r.primero->v=v;
-            r.primero->siguiente=aux;
-            r.numDatos=r.numDatos+1;            
-            return 0;
-        }
         else{
-            aux=r.primero;
-            while((aux->c)<c && aux->siguiente!=nullptr){
-                aux=aux->siguiente;
-            }
-            if(c<aux->c){
-                unaCelda.c=c;
-                unaCelda.v=v;
-		typename ronda<T1,T2>::Nodo* nuevo= new typename ronda<T1,T2>::Nodo;			
-                *nuevo=*aux;
-                *aux=unaCelda;
-                aux->siguiente=nuevo;
-                r.numDatos=r.numDatos+1;        
-		return 0;
+            if(c==aux->c){
+                aux->v=v;
+	        return 1;
             }
             else{
-                if(c==aux->c){
-                    aux->v=v;
-		    return 1;
-                }
-                else{
-                     	aux->siguiente=new typename ronda<T1,T2>::Nodo;
-                     	aux=aux->siguiente;
-                     	aux->c=c;
-                     	aux->v=v;
-			aux->siguiente=nullptr;
-                    	r.numDatos=r.numDatos+1;                        
-			return 0;
-                }
+                aux->siguiente=new typename ronda<T1,T2>::Nodo;
+                aux=aux->siguiente;
+                aux->c=c;
+                aux->v=v;
+		aux->siguiente=nullptr;
+                r.numDatos=r.numDatos+1;                        
+		return 0;
             }
         }
-    }
-    else{
-        return 2;
     }
 }
 /* Si c está en r, devuelve una ronda igual a la resultante de borrar en r el par con clave c si c no está en r devuelve una ronda igual a r.

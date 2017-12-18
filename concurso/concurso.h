@@ -175,18 +175,29 @@ bool marcarPregunta(concurso& c, int clave, instante t){
 }
 
 bool iniciarInscripcion(concurso& c){
-	if(!enDocumentacion(c) && totalPreguntas(c)==0){
+	if(enDocumentacion(c) && totalPreguntas(c)>0){
 		c.enDoc = false;
 		c.enInsc = true;
-		return true;
+		return false;
 	}
 	else{
-		return false;
+		return true;
 	}
 }
 
 int anadirConcursante(concurso& c, string IDconcursante, participante p){
-	return annadir(c.round, IDconcursante, p);
+	/*
+         * Codigo utilizado en la funcion marcarTiempo en concurso.h
+         * 0: No existia el participante 
+         * 1: ya existia el participante
+         * 2: no es posible introducir al participante
+         */
+	if(enInscripcion(c)){
+		return annadir(c.round, IDconcursante, p);
+	}
+	else{
+		return 2;
+	}
 }
 
 int borrarConcursante(concurso& c, string IDconcursante){
@@ -310,7 +321,7 @@ string listarConcursantes(concurso& c){
 	string texto = "-*- LISTADO DE CONCURSANTES -*-\n";
 	int numero = totalConcursantes(c);
 	texto = texto + "TOTAL concursantes: " + to_string(numero) + "\n";
-	texto = texto + listar(c.grupo);
+	texto = texto + listar(c.round);
 	texto = texto + "-*-*-*-\n";
 	return texto;
 }
@@ -319,7 +330,7 @@ string listarPreguntas(concurso& c){
 	string texto = "--- LISTADO DE PREGUNTAS ---\n";
 	int numero = totalPreguntas(c);
 	texto = texto + "TOTAL preguntas: " + to_string(numero) + "\n";
-	texto = texto + listar(c.round);
+	texto = texto + listar(c.grupo);
 	texto = texto + "------\n";
 	return texto;
 }

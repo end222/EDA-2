@@ -20,13 +20,15 @@
 int convertir(char* cadena);
 
 void separar(int& horas, int& minutos, char* tiempo){
-	char horasStr[2];
+	char horasStr[10];
 	horasStr[0] = tiempo[0];
 	horasStr[1] = tiempo[1];
+	horasStr[2] = '\0';
 
-	char minutosStr[2];
+	char minutosStr[10];
 	minutosStr[0] = tiempo[3];
 	minutosStr[1] = tiempo[4];
+	minutosStr[2] = '\0';
 
 	horas = convertir(horasStr);
 	minutos = convertir(minutosStr);
@@ -159,8 +161,8 @@ void mp(ifstream& entrada, ofstream& salida, concurso& c){
 	int horas;
 	int minutos;
 
-	separar(horas, minutos, argumento[1]);
 
+	separar(horas, minutos, argumento[1]);
 	crearInstante(t, horas, minutos);
 
 	/*
@@ -203,14 +205,14 @@ void ipa(ifstream& entrada, ofstream& salida, concurso& c){
 
 	switch(anadirConcursante(c, argumento[0], p))
 	{
+		case 0:
+			salida << "participante INSCRITO: " << endl;
+			break;
 		case 1:
-			salida << "participante INSCRITO: " << flush;
+			salida << "participante ACTUALIZADO: " << endl;
 			break;
 		case 2:
-			salida << "participante ACTUALIZADO: " << flush;
-			break;
-		case 3:
-			salida << "inscripcion CERRADA: " << flush;
+			salida << "inscripcion CERRADA: " << endl;
 			break;
 	}
 	// Falta la info del participante
