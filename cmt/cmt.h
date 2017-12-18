@@ -27,7 +27,7 @@ template <typename T1, typename T2, typename T3> bool tieneTiempo(cmt<T1, T2, T3
 template <typename T1, typename T2, typename T3> bool obtenerDato(cmt<T1, T2, T3>& c, T1& k, T2& v);
 template <typename T1, typename T2, typename T3> int obtenerTiempo(cmt<T1, T2, T3>& c, T1& k, T3& t);
 template <typename T1, typename T2, typename T3> bool marcarTiempo(cmt<T1, T2, T3>& c, T1& k, T3& t);
-template <typename T1, typename T2, typename T3> int borrar(cmt<T1, T2, T3>& c, T1& k);
+template <typename T1, typename T2, typename T3> bool borrar(cmt<T1, T2, T3>& c, T1& k);
 template <typename T1, typename T2, typename T3> int tamano(cmt<T1, T2, T3>& c);
 template <typename T1, typename T2, typename T3> string listar(cmt<T1, T2, T3>& c);
 // ITERADORES
@@ -59,7 +59,7 @@ struct cmt {
     friend bool obtenerDato<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k, T2& v);
     friend int obtenerTiempo<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k, T3& t);
     friend bool marcarTiempo<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k, T3& t);
-    friend int borrar<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k);
+    friend bool borrar<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k);
     friend int tamano<T1, T2, T3>(cmt<T1, T2, T3>& c);
     friend string listar<T1, T2, T3>(cmt<T1, T2, T3>& c);
     // ITERADORES
@@ -86,26 +86,28 @@ bool esVacio(cmt<T1,T2,T3>& c){
 }
 template <typename T1, typename T2, typename T3>
 bool existe_aux (Nodo<T1,T2,T3>* entrada, Nodo<T1,T2,T3>* salida, const T1& clave){
+	bool error;
 	if (entrada==nullptr){
-		return true;
+		error = true;
 	}
 	else{
 		if (clave<entrada->dato.k){
-			return existe_aux(entrada->izq,salida,clave);	
+			error = existe_aux(entrada->izq,salida,clave);	
 		}
 		else if (clave>entrada->dato.k){
-			return existe_aux(entrada->der,salida,clave);	
+			error =  existe_aux(entrada->der,salida,clave);	
 		}
 		else if (clave==entrada->dato.k){
 			salida=entrada;
-			return true;
+			error = true;
 		}
 	}
+	return error;
 }
 
 template <typename T1, typename T2, typename T3>
 bool existeClave(cmt<T1, T2, T3>& c, T1& k){
-	Nodo<T1,T2,T3>* aux; 
+	Nodo<T1,T2,T3>* aux=nullptr; 
 	return (existe_aux(c.abb,aux,k));
 }
 
@@ -160,7 +162,7 @@ void inOrden(Nodo<T1,T2,T3>* entrada, queue <Nodo<T1,T2,T3>* > l){
 
 template <typename T1, typename T2, typename T3> 
 bool tieneTiempo(cmt<T1, T2, T3>& c, T1& k){
-	Nodo<T1, T2, T3>* testigo;
+	Nodo<T1, T2, T3>* testigo=nullptr;
 	existe_aux(c.abb,testigo,k);
 	if (testigo->dato.hayTiempo==true){
 		return true;
@@ -173,7 +175,7 @@ bool tieneTiempo(cmt<T1, T2, T3>& c, T1& k){
 template <typename T1, typename T2, typename T3> 
 bool obtenerDato(cmt<T1, T2, T3>& c, T1& k, T2& v){
 	bool fase;
-	Nodo<T1, T2, T3>* testigo;
+	Nodo<T1, T2, T3>* testigo=nullptr;
 	fase = existe_aux(c.abb,testigo,k);
 	v=testigo->dato.v;
 	return fase;
@@ -182,7 +184,7 @@ bool obtenerDato(cmt<T1, T2, T3>& c, T1& k, T2& v){
 template <typename T1, typename T2, typename T3>
 int obtenerTiempo(cmt<T1, T2, T3>& c, T1& k, T3& t){
 	bool fase; //0EXISTE LA CLAVE, 1NOEXISTE LA CLAVE
-	Nodo<T1, T2, T3>* testigo;
+	Nodo<T1, T2, T3>* testigo=nullptr;
 	fase = existe_aux(c.abb,testigo,k);
 	if (fase){
 		if (testigo->dato.hayTiempo==true){
@@ -200,7 +202,7 @@ int obtenerTiempo(cmt<T1, T2, T3>& c, T1& k, T3& t){
 template <typename T1, typename T2, typename T3> 
 bool marcarTiempo(cmt<T1, T2, T3>& c, T1& k, T3& t){
 	bool fase; //0EXISTE LA CLAVE, 1NOEXISTE LA CLAVE
-	Nodo<T1, T2, T3>* testigo;
+	Nodo<T1, T2, T3>* testigo=nullptr;
 	fase = existe_aux(c.abb,testigo,k);
 	if (fase){
 		testigo->dato.t=t;
@@ -221,8 +223,9 @@ void max(Nodo<T1,T2,T3>* entrada, T1& clave){
 	}
 }
 template <typename T1, typename T2, typename T3> 
-int borrar_aux (Nodo<T1,T2,T3>* entrada, T1& k){
+bool borrar_aux (Nodo<T1,T2,T3>* entrada, T1& k){
 	Nodo<T1,T2,T3>* aux;
+	bool error;
 	if (entrada==nullptr){
 		if (k<(entrada->dato.k)){
 			borrar_aux(entrada->izq,k);
@@ -235,7 +238,7 @@ int borrar_aux (Nodo<T1,T2,T3>* entrada, T1& k){
 				aux=entrada;
 				entrada=entrada->der;
 				delete (aux);
-				return 0; //Todo correcto
+				error = 0; //Todo correcto
 			}
 			else{
 				max(entrada->izq,k);
@@ -246,11 +249,12 @@ int borrar_aux (Nodo<T1,T2,T3>* entrada, T1& k){
 	
 	}
 	else{
-		return 1; // Problemas al borrar, árbol vacio
+		error = 1; // Problemas al borrar, árbol vacio
 	}
+	return error;
 }
 template <typename T1, typename T2, typename T3> 
-int borrar(cmt<T1, T2, T3>& c, T1& k){
+bool borrar(cmt<T1, T2, T3>& c, T1& k){
 	int control;
 	control = borrar_aux(c.abb,k);
 	if (control==0){
@@ -288,7 +292,6 @@ template <typename T1, typename T2, typename T3>
 void iniciarIterador(cmt<T1, T2, T3>& c){
 	inOrden(c.abb,c.l);
 	c.iterador=c.l.front();
-	c.l.pop();
 }
 
 template <typename T1, typename T2, typename T3>
@@ -310,6 +313,7 @@ bool siguiente(cmt<T1, T2, T3>& c, T1& k, T2& v, T3& t){
 
 template <typename T1, typename T2, typename T3> 
 bool existeSiguiente(cmt<T1, T2, T3>& c){
+	int cosa = c.l.size();
 	return (c.l.size()>0);
 }
 
