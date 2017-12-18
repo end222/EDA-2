@@ -17,9 +17,12 @@ string generaCadena(pregunta& t);
 
 void crearPregunta(pregunta& t, string pregunta1, string respuesta1, string respuesta2, int correcta);
 
+int correcta(pregunta& t);
+
 struct pregunta{
   friend string generaCadena(pregunta& t);
   friend void crearPregunta(pregunta& t, string pregunta1, string respuesta1, string respuesta2, int correcta);
+  friend int correcta(pregunta& t);
   private:
     string pregunta;
     string respuesta1;
@@ -39,4 +42,7 @@ void crearPregunta(pregunta& t, string pregunta1, string respuesta1, string resp
   t.correcta = correcta;
 }
 
+int correcta(pregunta& t){
+	return t.correcta;
+}
 #endif

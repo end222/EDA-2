@@ -250,7 +250,60 @@ bool hayGanadores(concurso c){
 }
 
 int probarConcursanteActual(concurso& c, int clave, instante t, int respuesta){
+	/*
+         * Codigo utilizado en concurso.h
+         * 0: puede responder
+         * 1: no esta en la fase adecuada
+         * 2: ronda vacia
+         * 3: la clave de la pregunta no esta en el concurso
+         * 4: ninguno de los anteriores
+         */
 
+	string nombre;
+	participante part;
+	obtenerCandidatoSuClave(c.round,nombre);
+    	obtenerCandidatoSuValor(c.round,part);
+	if(existeClave(c.grupo, clave)){
+		if(enJuego(c)){
+			if(totalConcursantes(c)>0){
+				if(respuesta == 0){
+					if(c.maximoPases > intentos(part)){
+						sumarIntento(part);
+						actualizarCandidato(c.round,part);
+						pasarTurno(c.round);
+						return 0;
+					}
+					else{
+						return 4;
+					}
+				}
+				else{
+					pregunta p;
+					obtenerPregunta(c,clave,p);
+					if(respuesta == correcta(p)){
+						sumarAcierto(part);
+       		                                actualizarCandidato(c.round,part);
+       	                                 	pasarTurno(c.round);
+					}
+					else{
+						sumarFallo(part);
+       	                                 	actualizarCandidato(c.round,part);
+       	                                 	pasarTurno(c.round);
+					}
+					return 0;
+				}
+			}
+			else{
+				return 2;
+			}
+		}
+		else{
+			return 1;
+		}
+	}
+	else{
+		return 3;
+	}
 }
 
 string listarPreguntas(concurso& c){

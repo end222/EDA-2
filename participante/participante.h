@@ -19,6 +19,9 @@ void crearParticipante(participante& p,string datos);
 void sumarAcierto(participante& p);
 void sumarFallo(participante& p);
 void sumarIntento(participante& p);
+int aciertos(participante& p);
+int fallos(participante& p);
+int intentos(participante& p);
 
 struct participante{
   friend string generaCadena(participante& p);
@@ -26,6 +29,9 @@ struct participante{
   friend void sumarAcierto(participante& p);
   friend void sumarFallo(participante& p);
   friend void sumarIntento(participante& p);
+  friend int aciertos(participante& p);
+  friend int fallos(participante& p);
+  friend int intentos(participante& p);
   private:
     string datos;
     int aciertos;

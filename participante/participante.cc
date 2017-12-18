@@ -35,3 +35,15 @@ void sumarFallo(participante& p){
 void sumarIntento(participante& p){
   p.intentos++;
 }
+
+int aciertos(participante& p){
+  return p.aciertos;
+}
+
+int fallos(participante& p){
+  return p.fallos;
+}
+
+int intentos(participante& p){
+  return p.intentos;
+}
