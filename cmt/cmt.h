@@ -76,13 +76,13 @@ private:
 
 template <typename T1, typename T2, typename T3>
 void crear(cmt<T1,T2,T3>& c){
-	c=nullptr;
+	c.abb=nullptr;
 	c.numElementos=0;
 }
 
 template <typename T1, typename T2, typename T3>
 bool esVacio(cmt<T1,T2,T3>& c){
-	return c==nullptr;	
+	return c.abb==nullptr;	
 }
 template <typename T1, typename T2, typename T3>
 bool existe_aux (Nodo<T1,T2,T3>* entrada, Nodo<T1,T2,T3>* salida, const T1& clave){
@@ -249,7 +249,7 @@ int borrar_aux (Nodo<T1,T2,T3>* entrada, T1& k){
 template <typename T1, typename T2, typename T3> 
 int borrar(cmt<T1, T2, T3>& c, T1& k){
 	int control;
-	if (borrar=borrar_aux(c->abb)==0){
+	if (borrar=borrar_aux(c.abb,k)==0){
 		c.numElementos--;
 	}
 	return control;
