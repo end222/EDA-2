@@ -6,5 +6,6 @@
 *.o
 *.d
 *.mk
+*.exe
 makefile
 cmt/maincraft.cpp
