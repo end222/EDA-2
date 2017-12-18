@@ -310,7 +310,7 @@ bool siguiente(cmt<T1, T2, T3>& c, T1& k, T2& v, T3& t){
 		return true; // Se ha podido pasar al siguiente ya que existe un siguiente
 	}
 	else{
-		return false;
+		return false; //No existe siguiente.
 	}
 }
 
