@@ -143,15 +143,14 @@ bool introducir(cmt<T1, T2, T3>& c, T1& k, T2& v){
 }
 template <typename T1, typename T2, typename T3>
 void inOrden(Nodo<T1,T2,T3>* entrada, queue <Nodo<T1,T2,T3>* > l){
-	bool error;
 	Nodo<T1,T2,T3>* ai;
 	Nodo<T1,T2,T3>* ad;
 	if (entrada!=nullptr){
 		ai=entrada->izq;
-		inOrden(entrada,l);
+		inOrden(ai,l);
 		l.push(entrada);
 		ad=entrada->der;
-		inOrden(entrada,l);
+		inOrden(ad,l);
 		
 	}
 }

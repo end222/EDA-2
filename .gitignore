@@ -1,4 +1,10 @@
-core.project
-EDA2.workspace
-.codelite/refactoring.db
-.codelite/EDA2.tags
+/.codelite
+/.clang
+*.workspace
+*.project
+*.txt
+*.o
+*.d
+*.mk
+makefile
+cmt/maincraft.cpp
