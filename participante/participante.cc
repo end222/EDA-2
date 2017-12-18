@@ -17,7 +17,7 @@ string generaCadena(participante& p){
   return mostrar;
 }
 
-void crearParticipante(participante& p,string& datos){
+void crearParticipante(participante& p,string datos){
   p.datos = datos;
   p.intentos = 0;
   p.aciertos = 0;

@@ -22,7 +22,7 @@ void sumarIntento(participante& p);
 
 struct participante{
   friend string generaCadena(participante& p);
-  friend void crearParticipante(participante& p,string& datos);
+  friend void crearParticipante(participante& p,string datos);
   friend void sumarAcierto(participante& p);
   friend void sumarFallo(participante& p);
   friend void sumarIntento(participante& p);

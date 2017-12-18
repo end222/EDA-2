@@ -1,6 +1,69 @@
+lt
 ip
-bpa
-lr
-oc
+7
+El sol sale por el...
+Oeste
+Este
+2
+mp
+7
+15:55
+ipa
+Aria
+Desembarco del Rey
+ip
+3
+Cuantos Aegon hay en GoT?
+Uno
+No lo sabe ni G.R.R. Martin
+2
+ip
+1
+Tras el invierno llega...
+la primavera
+el verano
+1
+bp
+5
 ii
+lt
+bp
+3
+ipa
+Jon
+El Muro
 ij
+ipa
+Aria
+Desembarco del Rey
+ipa
+Bran
+Invernalia
+bpa
+Aria
+ij
+lt
+pca
+7
+11:00
+0
+lt
+pca
+3
+11:10
+1
+pca
+3
+11:15
+1
+lt
+pca
+7
+18:00
+1
+hg
+pca
+1
+10:00
+2
+lt
