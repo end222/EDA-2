@@ -215,7 +215,6 @@ int annadir(ronda<T1,T2>& r,T1& c,T2& v){
  * Parcial: la operación no está definida si enSelección?(r).*/
 template<typename T1, typename T2>
 int quitar(ronda<T1,T2>& r,T1& c){
-	if (!enSeleccion(r)){
 		typename ronda<T1,T2>::Nodo* aux1;
 		typename ronda<T1,T2>::Nodo* aux2;
 		bool parar;
@@ -255,10 +254,6 @@ int quitar(ronda<T1,T2>& r,T1& c){
 			else devolver = 1;
 		}
 	return devolver;
-	}
-	else{
-		return 2;
-	}
 }
 /* Si enSelección?(r), devuelve una ronda igual a r si no enSelección?(r), devuelve una ronda igual a la resultante de poner r en estado de Selección y 
 además, si no esVacía?(r), fijar el turno en el elemento de menor clave en la ronda r.
@@ -277,7 +272,7 @@ void cerrarInscripcion(ronda<T1,T2>& r){
 
 template<typename T1, typename T2>
 bool pasarTurno(ronda<T1,T2>& r){
-    if(enSeleccion(r) && !esVacio(r)){
+    if(!esVacio(r)){
         if (r.turno->siguiente!=nullptr){
             T1 clave;
             T2 valor;
@@ -300,7 +295,6 @@ la operación no está definida si no es verdad enSelección?(r) o si esVacía?(
 */
 template<typename T1, typename T2>
 bool obtenerCandidatoSuClave(ronda<T1,T2>& r,T1& c){
-    if (enSeleccion(r)){
         if (!esVacio(r)){
            c= r.turno->c;
            return true;
@@ -308,12 +302,6 @@ bool obtenerCandidatoSuClave(ronda<T1,T2>& r,T1& c){
         else{
             return false;
         }
-    }
-    else{
-        return false;
-    }
-        
-    
 }
 
 /* Si enSelección?(r), devuelve el valor v del par (c,v) que tiene el turno en la ronda r la 
@@ -322,20 +310,13 @@ bool obtenerCandidatoSuClave(ronda<T1,T2>& r,T1& c){
  * Parcial: la operación no está definida si no es verdad enSelección?(r) o si esVacía?(r).*/
 template<typename T1, typename T2>
 bool obtenerCandidatoSuValor(ronda<T1,T2>& r,T2& v){
-    if (enSeleccion(r)){
-        if (!esVacio(r)){
+        if(!esVacio(r)){
            v = r.turno->v;
            return true;
         }
         else{
             return false;
         }
-    }
-    else{
-        return false;
-    }
-        
-    
 }
 /* Si enSelección?(r), devuelve una ronda igual a la resultante de actualizar en r el valor del elemento que tiene el turno, actualizándolo 
  * a v la operación no está definida si no es verdad enSelección?(r) o si esVacía?(r). 
@@ -343,7 +324,7 @@ bool obtenerCandidatoSuValor(ronda<T1,T2>& r,T2& v){
  */
 template<typename T1, typename T2>
 bool actualizarCandidato(ronda<T1,T2>& r,T2& v){
-	if (enSeleccion(r)){
+    if (!esVacio(r)){
         r.turno->v=v;
 		return true;
     }
@@ -361,7 +342,6 @@ mayor clave, el turno deberá pasar al de menor clave de los que queden.
  * Parcial: la  operación  no  está  definida  si  no  es  verdad  enSelección?(r) o  si  es  verdad esVacía?(r). */
 template<typename T1, typename T2>
 bool eliminarCandidato(ronda<T1,T2>& r){
-    if (enSeleccion(r)){
         if (!esVacio(r)){
 			T1 c = r.turno->c;
 			typename ronda<T1,T2>::Nodo* aux1;
@@ -403,10 +383,6 @@ bool eliminarCandidato(ronda<T1,T2>& r){
 		else{
 			return false;
 		}
-	}
-    else{
-        return false;
-    }
 }
 /*
  * Devuelve una cadena que contiene la representación, como cadenas de caracteres, de todos los 

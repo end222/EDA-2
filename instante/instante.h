@@ -19,6 +19,7 @@ string generaCadena(instante& t);
 struct instante{
   friend string generaCadena(instante& t);
   friend void crearInstante(instante& t,int horas, int minutos);
+  friend bool esMayor(instante uno, instante otro);
   private:
     int horas;
     int minutos;
@@ -37,4 +38,16 @@ void crearInstante(instante& t,int horas, int minutos){
   t.minutos = minutos;
 }
 
+bool esMayor(instante uno, instante otro){
+	if(uno.horas > otro.horas){
+		return true;
+	}
+	else if(uno.horas == otro.horas){
+		if(uno.minutos > otro.minutos){
+			return true;
+		}
+		else return false;
+	}
+	else return false;
+}
 #endif

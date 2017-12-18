@@ -31,7 +31,7 @@ struct pregunta{
 };
 
 string generaCadena(pregunta& t){
-  string st = "<*" + t.pregunta + "*>\n" + "<A) " + t.respuesta1 + " ; B) " + t.respuesta2 + " ; OK: " + to_string(t.correcta) + ">\n";
+  string st = "<*" + t.pregunta + "*>:\n" + "<A) " + t.respuesta1 + " ; B) " + t.respuesta2 + " ; OK: " + to_string(t.correcta) + ">\n";
   return st;
 }
 

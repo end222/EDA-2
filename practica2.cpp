@@ -18,6 +18,22 @@
 #include <string>
 
 int convertir(char* cadena);
+void separar(int& horas, int& minutos, char* tiempo);
+
+string mostrarTiempo(char* tiempo){
+	string mostrar;
+	int horas;
+	int minutos;
+	separar(horas, minutos, tiempo);
+	mostrar = to_string(horas) + ":";
+	if(minutos != 0){
+		mostrar = mostrar + to_string(minutos);
+	}
+	else{
+		mostrar = mostrar + "0";
+	}
+	return mostrar;
+}
 
 void separar(int& horas, int& minutos, char* tiempo){
 	char horasStr[10];
@@ -87,6 +103,7 @@ void ip(ifstream& entrada, ofstream& salida, concurso& c){
 			break;	
 	}
 	salida << argumento[0] << ":::-" << endl;
+	salida << generaCadena(question) << flush; 
 }
 
 /*
@@ -206,16 +223,16 @@ void ipa(ifstream& entrada, ofstream& salida, concurso& c){
 	switch(anadirConcursante(c, argumento[0], p))
 	{
 		case 0:
-			salida << "participante INSCRITO: " << endl;
+			salida << "participante INSCRITO: " << flush;
 			break;
 		case 1:
-			salida << "participante ACTUALIZADO: " << endl;
+			salida << "participante ACTUALIZADO: " << flush;
 			break;
 		case 2:
-			salida << "inscripcion CERRADA: " << endl;
+			salida << "inscripcion CERRADA: " << flush;
 			break;
 	}
-	// Falta la info del participante
+	salida << argumento[0] << ";" << generaCadena(p) << endl;
 }
 
 void bpa(ifstream& entrada, ofstream& salida, concurso& c){
@@ -228,18 +245,18 @@ void bpa(ifstream& entrada, ofstream& salida, concurso& c){
 	
 	/*
 	 * Codigo utilizado en la funcion marcarTiempo en concurso.h
-	 * 0: No existia el participante 
-	 * 1: ya existia el participante
+	 * 0: ya existia el participante
+	 * 1: No existia el participante 
 	 * 2: no es posible borrar al participante
 	 */
 
 	switch(borrarConcursante(c, argumento))
 	{
 		case 0:
-			salida << "participante NO ENCONTRADO: " << argumento << endl;
+			salida << "participante BORRADO: " << argumento << endl;
 			break;
 		case 1:
-			salida << "participante BORRADO: " << argumento << endl;
+			salida << "participante NO ENCONTRADO: " << argumento << endl;
 			break;
 		case 2:
 			salida << "BORRADO participante DESCARTADO: " << argumento << endl;
@@ -375,12 +392,32 @@ void pca(ifstream& entrada, ofstream& salida, concurso& c){
 	 * 3: la clave de la pregunta no esta en el concurso
 	 * 4: ninguno de los anteriores
 	 */
+	
+	participante p;
+        string concurs;
+        obtenerConcursanteActual(c, concurs);
+        obtenerInfoConcursante(c,concurs,p);
+	pregunta question;
+	obtenerPregunta(c,convertir(argumento[0]),question);
+	string mostrar = mostrarTiempo(argumento[1]);
 
+	instante ultimo;
+	int error = obtenerUltimoUsoPregunta(c, convertir(argumento[0]), ultimo);
+	if(esMayor(tiempo,ultimo) ||  error == 1){
+		marcarPregunta(c, convertir(argumento[0]), tiempo);
+	}
 	switch(probarConcursanteActual(c, convertir(argumento[0]), tiempo, convertir(argumento[2])))
 	{
 		case 0:
 			salida << "+++ RESPONDE CONCURSANTE +++" << endl;
-			// Faltan cosas
+			salida << "CONCURSANTE: " << concurs << ";" << generaCadena(p) << endl;
+			
+			salida << "PREGUNTA: " << generaCadena(question) << flush;
+			salida << "RESPUESTA DADA: " << argumento[2] << " TIEMPO: " << mostrar << endl;
+			if(fallos(p)+1 == maximoFallosPermitidos(c) && convertir(argumento[2]) != 0 && convertir(argumento[2]) != correcta(question)){
+				salida << "CONCURSANTE ELIMINADO" << endl;
+			}
+			salida << "+++++++++++" << endl;
 			break;
 		case 1:
 			salida << "PROBAR concursante DESCARTADO" << endl;
@@ -393,6 +430,7 @@ void pca(ifstream& entrada, ofstream& salida, concurso& c){
 			break;
 		case 4:
 			salida << "RESPUESTA NO VALIDA" << endl;
+			break;
 	}
 }
 
@@ -407,7 +445,7 @@ void hg(ifstream& entrada, ofstream& salida, concurso& c){
 	{
 		case true:
 			salida << "<<< CONCURSANTES GANADORES >>>" << endl;
-			salida << listarConcursantes(c) << endl;
+			salida << listarConcursantes(c) << flush;
 			break;
 		case false:
 			salida << "SIN GANADORES"  << endl;

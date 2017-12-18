@@ -39,9 +39,9 @@ bool iniciarInscripcion(concurso& c);
 int anadirConcursante(concurso& c, string IDconcursante, participante p);
 int borrarConcursante(concurso& c, string IDconcursante);
 bool existeConcursante(concurso& c, string IDconcursante);
-bool obtenerInfoConcursante(concurso& c, string IDconcursante, participante p);
+bool obtenerInfoConcursante(concurso& c, string IDconcursante, participante& p);
 int totalConcursantes(concurso& c);
-bool iniciarJuego(concurso c);
+bool iniciarJuego(concurso& c);
 bool existeConcursanteActual(concurso& c);
 int obtenerConcursanteActual(concurso& c, string& concursante);
 bool hayGanadores(concurso c);
@@ -70,9 +70,9 @@ struct concurso{
 	friend int anadirConcursante(concurso& c, string IDconcursante, participante p);
 	friend int borrarConcursante(concurso& c, string IDconcursante);
 	friend bool existeConcursante(concurso& c, string IDconcursante);
-	friend bool obtenerInfoConcursante(concurso& c, string IDconcursante, participante p);
+	friend bool obtenerInfoConcursante(concurso& c, string IDconcursante, participante& p);
 	friend int totalConcursantes(concurso& c);
-	friend bool iniciarJuego(concurso c);
+	friend bool iniciarJuego(concurso& c);
 	friend bool existeConcursanteActual(concurso& c);
 	friend int obtenerConcursanteActual(concurso& c, string& concursante);
 	friend bool hayGanadores(concurso c);
@@ -201,14 +201,19 @@ int anadirConcursante(concurso& c, string IDconcursante, participante p){
 }
 
 int borrarConcursante(concurso& c, string IDconcursante){
-	return quitar(c.round, IDconcursante);
+	if(enInscripcion(c)){
+		return quitar(c.round, IDconcursante);
+	}
+	else{
+		return 2;
+	}
 }
 
 bool existeConcursante(concurso& c, string IDconcursante){
 	return pertenece(c.round, IDconcursante);
 }
 
-bool obtenerInfoConcursante(concurso& c, string IDconcursante, participante p){
+bool obtenerInfoConcursante(concurso& c, string IDconcursante, participante& p){
 	return obtenerValor(c.round, IDconcursante, p);
 }
 
@@ -216,14 +221,15 @@ int totalConcursantes(concurso& c){
 	return cardinal(c.round);
 }
 
-bool iniciarJuego(concurso c){
+bool iniciarJuego(concurso& c){
 	if(enInscripcion(c) && totalConcursantes(c)>maximoNumeroGanadores(c)){
 		c.enJ = true;
 		c.enInsc = false;
-		return true;
+		cerrarInscripcion(c.round);
+		return false;
 	}
 	else{
-		return false;
+		return true;
 	}
 }
 
@@ -300,6 +306,9 @@ int probarConcursanteActual(concurso& c, int clave, instante t, int respuesta){
 						sumarFallo(part);
        	                                 	actualizarCandidato(c.round,part);
        	                                 	pasarTurno(c.round);
+						if(fallos(part) == c.maximoFallos){
+							quitar(c.round, nombre);
+						}
 					}
 					return 0;
 				}
