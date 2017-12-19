@@ -107,13 +107,15 @@ bool esVacio(ronda<T1,T2>& r){
 /*Devuelve verdad si y sólo si en r hay algún par (c,v)} */
 template<typename T1, typename T2>
 bool pertenece(ronda<T1,T2>& r,T1& c){
-    iniciarIterador(r);
+    typename ronda<T1,T2>::Nodo* aux = r.primero;
     bool encontrado=false;
     T1 laClave;
     T2 elValor;
     
-    while (!encontrado && existeSiguiente(r)){
-        siguiente(r,laClave,elValor);
+    while (!encontrado && aux != nullptr){
+	laClave = aux->c;
+	elValor = aux->v;
+        aux = aux->siguiente;
         if (laClave==c){
             encontrado=true;
         }
@@ -126,13 +128,15 @@ bool pertenece(ronda<T1,T2>& r,T1& c){
  */
 template<typename T1, typename T2>
 bool obtenerValor(ronda<T1,T2>& r,T1& c, T2& v){
-    iniciarIterador(r);
+    typename ronda<T1,T2>::Nodo* aux = r.primero;
     bool encontrado=false;
     T1 laClave;
     T2 elValor;
     
-    while (!encontrado && existeSiguiente(r)){
-        siguiente(r,laClave,elValor);
+    while (!encontrado && aux != nullptr){
+	laClave = aux->c;
+	elValor = aux->v;
+        aux = aux->siguiente;
         if (laClave==c){
             encontrado=true;
             v=elValor;
@@ -261,7 +265,7 @@ además, si no esVacía?(r), fijar el turno en el elemento de menor clave en la 
 template<typename T1, typename T2>
 void cerrarInscripcion(ronda<T1,T2>& r){
     r.seleccion=true;
-	r.turno=r.primero;
+    r.turno=r.primero;
 }
 /*
  * Si enSelección?(r), devuelve una ronda igual a la resultante de pasar el turno del 
