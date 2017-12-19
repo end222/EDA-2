@@ -24,7 +24,7 @@ template <typename T1, typename T2, typename T3> bool esVacio(cmt<T1, T2, T3>& c
 template <typename T1, typename T2, typename T3> bool existeClave(cmt<T1, T2, T3>& c, T1& k);
 template <typename T1, typename T2, typename T3> bool introducir(cmt<T1, T2, T3>& c, T1& k, T2& v);
 
-template <typename T1, typename T2, typename T3> bool tieneTiempo(cmt<T1, T2, T3>& c, T1& k);
+template <typename T1, typename T2, typename T3> int tieneTiempo(cmt<T1, T2, T3>& c, T1& k);
 template <typename T1, typename T2, typename T3> bool obtenerDato(cmt<T1, T2, T3>& c, T1& k, T2& v);
 template <typename T1, typename T2, typename T3> int obtenerTiempo(cmt<T1, T2, T3>& c, T1& k, T3& t);
 template <typename T1, typename T2, typename T3> bool marcarTiempo(cmt<T1, T2, T3>& c, T1& k, T3& t);
@@ -56,7 +56,7 @@ struct cmt {
     friend bool existeClave<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k);
     friend bool introducir<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k, T2& v);
 
-    friend bool tieneTiempo<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k);
+    friend int tieneTiempo<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k);
     friend bool obtenerDato<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k, T2& v);
     friend int obtenerTiempo<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k, T3& t);
     friend bool marcarTiempo<T1, T2, T3>(cmt<T1, T2, T3>& c, T1& k, T3& t);
@@ -168,15 +168,22 @@ void inOrden(Nodo<T1,T2,T3>* entrada, Cola<Nodo<T1,T2,T3>* > & l){
 }
 
 template <typename T1, typename T2, typename T3> 
-bool tieneTiempo(cmt<T1, T2, T3>& c, T1& k){
+int tieneTiempo(cmt<T1, T2, T3>& c, T1& k){
+	bool fase;
 	Nodo<T1, T2, T3>* testigo=nullptr;
-	existe_aux(c.abb,testigo,k);
-	if (testigo->dato.hayTiempo==true){
-		return true;
+	fase = existe_aux(c.abb,testigo,k);
+	if (fase){
+		if (testigo->dato.hayTiempo==true){
+			fase=true;
+		}
+		else{
+			fase=false;
+		}
 	}
 	else{
-		return false;
+		fase=2;
 	}
+	return fase;
 }
 
 template <typename T1, typename T2, typename T3> 
@@ -184,8 +191,11 @@ bool obtenerDato(cmt<T1, T2, T3>& c, T1& k, T2& v){
 	bool fase;
 	Nodo<T1, T2, T3>* testigo=nullptr;
 	fase = existe_aux(c.abb,testigo,k);
-	v=testigo->dato.v;
+	if (fase){
+		v=testigo->dato.v;
+	}
 	return fase;
+	
 }
 
 template <typename T1, typename T2, typename T3>
@@ -296,7 +306,7 @@ string listar(cmt<T1, T2, T3>& c){
 	
 	while (existeSiguiente(c)){
 		siguiente(c,clave,valor,tiempo);
-		if(tieneTiempo(c,clave)){
+		if(tieneTiempo(c,clave)==1){
 			escribe=escribe+corcheteA+generaCadena(clave)+dosPuntos+dosPuntos+dosPuntos+generaCadena(tiempo)+'\n'+generaCadena(valor)+corcheteC+'\n';
 		}
 		else{
