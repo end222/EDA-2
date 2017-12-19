@@ -241,15 +241,15 @@ void max(Nodo<T1,T2,T3>* entrada, T1& clave){
 	}
 }
 template <typename T1, typename T2, typename T3> 
-bool borrar_aux (Nodo<T1,T2,T3>* & entrada, T1& k){
+bool borrar_aux (cmt<T1, T2, T3>& c, Nodo<T1,T2,T3>* & entrada, T1 & k){
 	Nodo<T1,T2,T3>* aux;
 	bool error;
 	if (entrada!=nullptr){
 		if (k<(entrada->dato.k)){
-			borrar_aux(entrada->izq,k);
+			error = borrar_aux(c, entrada->izq,k);
 		}
 		else if (k>(entrada->dato.k)){
-			borrar_aux(entrada->der,k);
+			error = borrar_aux(c, entrada->der,k);
 		}
 		else if (k==(entrada->dato.k)){
 			if (entrada->izq==nullptr){
@@ -260,11 +260,29 @@ bool borrar_aux (Nodo<T1,T2,T3>* & entrada, T1& k){
 			}
 			else{
 				T1 kaux;
+				T2 vaux;
+				T3 taux;
+				terna<T1,T2,T3> tern;
+				
 				max(entrada->izq,kaux);
+				tern.k = kaux;
+				tern.v = vaux;
+				
+				cout << kaux << endl;
+
+				obtenerDato(c, kaux, vaux);
+				bool existeT = tieneTiempo(c,kaux);
+				tern.hayTiempo = existeT;
+			
+				if(existeT){
+					obtenerTiempo(c,kaux,taux);
+					tern.t = taux;
+				}
+
 				//Corrección
-				entrada->dato.k=kaux;
+				entrada->dato=tern;
 				//Eliminación
-				borrar_aux(entrada->izq,entrada->dato.k);
+				error = borrar_aux(c,entrada->izq,kaux);
 			}
 		}
 	
@@ -282,7 +300,7 @@ bool borrar(cmt<T1, T2, T3>& c, T1& k){
 		control=1;
 	}
 	else{	
-		control = borrar_aux(c.abb,k);
+		control = borrar_aux(c,c.abb,k);
 		if (control==0){
 			c.numElementos--;
 		}
