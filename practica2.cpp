@@ -115,7 +115,9 @@ void lp(ifstream& entrada, ofstream& salida, concurso& c){
 	entrada.getline(argumento,1000);
 	if(existePregunta(c, convertir(argumento)))
 	{
-		salida << "PREGUNTA ENCONTRADA: " << flush;
+		pregunta p;
+		obtenerPregunta(c, convertir(argumento), p);
+		salida << "PREGUNTA ENCONTRADA: " << generaCadena(p) << flush;
 	}
 	else{
 		salida << "PREGUNTA NO encontrada: " << argumento << endl;
@@ -279,8 +281,8 @@ void mpa(ifstream& entrada, ofstream& salida, concurso& c){
 		salida << "participante DESCONOCIDO: " << argumento << endl;
 	}
 	else{
-		salida << "participante ENCONTRADO: " << endl;
-		// FALTA INFO DEL PARTICIPANTE
+		salida << "participante ENCONTRADO: " << flush;
+		salida << argumento << ";" << generaCadena(p) << endl;
 	}
 }
 
@@ -292,12 +294,14 @@ void oc(ifstream& entrada, ofstream& salida, concurso& c){
 	 * 2: consulta descartada por el estado de la ronda
 	 */
 
-	string p;
-
-	switch(obtenerConcursanteActual(c, p))
+	string nombre;
+	participante p;
+	switch(obtenerConcursanteActual(c, nombre))
 	{
 		case 0:
-			salida << "CANDIDATO a evaluar: " << endl;
+			salida << "CANDIDATO a evaluar: " << flush;
+			obtenerInfoConcursante(c, nombre, p);
+			salida << nombre << ";" << generaCadena(p) << endl;
 			break;
 		case 1:
 			salida << "ronda VACIA: " << endl;
@@ -306,7 +310,6 @@ void oc(ifstream& entrada, ofstream& salida, concurso& c){
 			salida << "CONSULTA candidato DESCARTADA: " << endl;
 			break;
 	}
-	// Falta la info del participante
 }
 
 void lr(ifstream& entrada, ofstream& salida, concurso& c){
