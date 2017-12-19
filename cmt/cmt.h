@@ -249,8 +249,11 @@ bool borrar_aux (Nodo<T1,T2,T3>* & entrada, T1& k){
 				error = 0; //Todo correcto
 			}
 			else{
-				max(entrada->izq,k);
-				entrada->dato.k=k;
+				T1 kaux;
+				max(entrada->izq,kaux);
+				//Corrección
+				entrada->dato.k=kaux;
+				//Eliminación
 				borrar_aux(entrada->izq,entrada->dato.k);
 			}
 		}

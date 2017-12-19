@@ -24,7 +24,7 @@ la primavera
 el verano
 1
 bp
-5
+3
 ii
 lt
 bp
