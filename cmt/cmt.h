@@ -307,20 +307,23 @@ void iniciarIterador(cmt<T1, T2, T3>& c){
 	inOrden(c.abb,c.l);
 	bool error;
 	if(!esVacia(c.l)){
-		primero(c,c.iterador,error);
+		primero(c.l,c.iterador,error);
 	}
 }
 
 template <typename T1, typename T2, typename T3>
 bool siguiente(cmt<T1, T2, T3>& c, T1& k, T2& v, T3& t){
+	bool error;
 	k=c.iterador->dato.k;
 	v=c.iterador->dato.v;
 	if (c.iterador->dato.hayTiempo){
 		t=c.iterador->dato.t;
 	}
 	if (existeSiguiente(c)){
-		c.l.pop();
-		c.iterador=c.l.front();
+		desencolar(c.l);
+		//c.l.pop();
+		primero(c.l,c.iterador,error);
+		//c.iterador=c.l.front();
 		return true; // Se ha podido pasar al siguiente ya que existe un siguiente
 	}
 	else{
@@ -330,8 +333,9 @@ bool siguiente(cmt<T1, T2, T3>& c, T1& k, T2& v, T3& t){
 
 template <typename T1, typename T2, typename T3> 
 bool existeSiguiente(cmt<T1, T2, T3>& c){
-	int cosa = c.l.size();
-	return (c.l.size()>0);
+	
+	int cosa = longitud(c.l);
+	return (cosa>0);
 }
 
 	
