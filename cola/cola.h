@@ -62,8 +62,45 @@ void encolar(Cola<Elemento>& c, const Elemento& dato){
 	c.elUltimo->siguiente=new typename Cola<Elemento>::Nodo;
 	c.elUltimo=c.elUltimo->siguiente;
 	}
-	c.elUltimo->=dato=dato;
-	c.elPrimero
+	c.elUltimo->valor=dato;
+	c.elUltimo->siguiente=nullptr;
+	c.numDatos=c.numDatos+1;
+	
 }
+template <typename Elemento>
+void desencolar(Cola<Elemento>& c){
+	 typename Cola<Elemento>::Nodo* aux;
+	if (!esVacia(c)){
+		aux=c.elPrimero;
+		c.elPrimero=c.elPrimero->siguiente;
+		delete (aux);
+		c.numDatos=c.numDatos-1;
+		if (c.numDatos==0){
+			c.elUltimo=nullptr;
+		}
+	}
+}
+template <typename Elemento> 
+void primero(const Cola<Elemento>& c, Elemento& dato, bool& error){
+	if (esVacia(c)){
+		error=true;
+	}
+	else{
+		error=false;
+		dato=c.elPrimero->valor;
+	}
+}
+
+template <typename Elemento>
+bool esVacia(const Cola<Elemento>& c){
+	return c.elPrimero==nullptr;
+}
+
+template <typename Elemento>
+int longitud(const Cola<Elemento>& c){
+	return c.numDatos;
+}
+
+
 // etc etc implementación de las demás operaciones
 #endif

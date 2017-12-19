@@ -10,7 +10,7 @@
 #include "../clave/clave.h"
 #include "../instante/instante.h"
 #include "../pregunta/pregunta.h"
-//#include "../cola/cola.h"
+#include "../cola/cola.h"
 #ifndef CMT_H
 #define CMT_H
 using namespace std;
@@ -72,7 +72,8 @@ private:
 	Nodo<T1, T2, T3>* abb;
 	Nodo<T1, T2, T3>* iterador;
 	int numElementos;
-	queue <Nodo<T1, T2, T3>* > l;
+	Cola<Nodo<T1,T2,T3>* > l;
+	//queue <Nodo<T1, T2, T3>* > l;
 };
 
 template <typename T1, typename T2, typename T3>
@@ -80,6 +81,7 @@ void crear(cmt<T1,T2,T3>& c){
 	c.abb=nullptr;
 	c.numElementos=0;
 	c.iterador = nullptr;
+	vacia(c.l);
 }
 
 template <typename T1, typename T2, typename T3>
@@ -151,13 +153,14 @@ bool introducir(cmt<T1, T2, T3>& c, T1& k, T2& v){
 	return control;
 }
 template <typename T1, typename T2, typename T3>
-void inOrden(Nodo<T1,T2,T3>* entrada, queue <Nodo<T1,T2,T3>* > & l){
+void inOrden(Nodo<T1,T2,T3>* entrada, Cola<Nodo<T1,T2,T3>* > & l){
 	Nodo<T1,T2,T3>* ai;
 	Nodo<T1,T2,T3>* ad;
 	if (entrada!=nullptr){
 		ai=entrada->izq;
 		inOrden(ai,l);
-		l.push(entrada);
+		encolar(l,entrada);
+		//l.push(entrada);
 		ad=entrada->der;
 		inOrden(ad,l);
 		
@@ -302,8 +305,9 @@ string listar(cmt<T1, T2, T3>& c){
 template <typename T1, typename T2, typename T3>
 void iniciarIterador(cmt<T1, T2, T3>& c){
 	inOrden(c.abb,c.l);
-	if(!c.l.empty()){
-		c.iterador=c.l.front();
+	bool error;
+	if(!esVacia(c.l)){
+		primero(c,c.iterador,error);
 	}
 }
 
