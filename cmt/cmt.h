@@ -79,6 +79,7 @@ template <typename T1, typename T2, typename T3>
 void crear(cmt<T1,T2,T3>& c){
 	c.abb=nullptr;
 	c.numElementos=0;
+	c.iterador = nullptr;
 }
 
 template <typename T1, typename T2, typename T3>
@@ -100,10 +101,10 @@ bool existe_aux (Nodo<T1,T2,T3>* entrada, Nodo<T1,T2,T3>* & salida, const T1& cl
 		}
 		else if (clave==entrada->dato.k){
 			salida=entrada;
-			error = false;
+			error = true;
 		}
 		else{
-			return true;
+			return false;
 		}
 	}
 	return error;
@@ -301,7 +302,9 @@ string listar(cmt<T1, T2, T3>& c){
 template <typename T1, typename T2, typename T3>
 void iniciarIterador(cmt<T1, T2, T3>& c){
 	inOrden(c.abb,c.l);
-	c.iterador=c.l.front();
+	if(!c.l.empty()){
+		c.iterador=c.l.front();
+	}
 }
 
 template <typename T1, typename T2, typename T3>
