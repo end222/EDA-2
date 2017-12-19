@@ -318,7 +318,7 @@ void oc(ifstream& entrada, ofstream& salida, concurso& c){
 }
 
 void lr(ifstream& entrada, ofstream& salida, concurso& c){
-	salida << listarConcursantes << endl;
+	salida << listarConcursantes(c) << endl;
 }
 
 void ii(ifstream& entrada, ofstream& salida, concurso& c){
