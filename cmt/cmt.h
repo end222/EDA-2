@@ -10,7 +10,7 @@
 #include "../clave/clave.h"
 #include "../instante/instante.h"
 #include "../pregunta/pregunta.h"
-#include "../cola/cola.h"
+//#include "../cola/cola.h"
 #ifndef CMT_H
 #define CMT_H
 using namespace std;
@@ -89,7 +89,7 @@ template <typename T1, typename T2, typename T3>
 bool existe_aux (Nodo<T1,T2,T3>* entrada, Nodo<T1,T2,T3>* & salida, const T1& clave){
 	bool error;
 	if (entrada==nullptr){
-		error = true; //Ha ocurrido un problema
+		error = false; //Ha ocurrido un problema
 	}
 	else{
 		if (clave<entrada->dato.k){
@@ -100,10 +100,10 @@ bool existe_aux (Nodo<T1,T2,T3>* entrada, Nodo<T1,T2,T3>* & salida, const T1& cl
 		}
 		else if (clave==entrada->dato.k){
 			salida=entrada;
-			error = true;
+			error = false;
 		}
 		else{
-			return false;
+			return true;
 		}
 	}
 	return error;
