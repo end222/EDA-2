@@ -7,7 +7,7 @@ CC = g++
 
 main: cmt/cmt.h concurso/concurso.h ronda/ronda.h clave/clave.h instante/instante.h pregunta/pregunta.h practica2.cpp alias.o participante.o 
 	$(CC) cmt/cmt.h concurso/concurso.h ronda/ronda.h clave/clave.h instante/instante.h \
-		pregunta/pregunta.h alias.o participante.o practica2.cpp -g -std=c++11 -o main
+	pregunta/pregunta.h alias.o participante.o practica2.cpp -g -std=c++11 -o main
 	
 alias.o: alias/alias.h alias/alias.cc
 	$(CC) alias/alias.h alias/alias.cc -g -c -std=c++11

@@ -113,15 +113,12 @@ void ip(ifstream& entrada, ofstream& salida, concurso& c){
 void lp(ifstream& entrada, ofstream& salida, concurso& c){
 	char argumento[1000];
 	entrada.getline(argumento,1000);
-	switch(existePregunta(c, convertir(argumento)))
+	if(existePregunta(c, convertir(argumento)))
 	{
-		case false:
-			salida << "PREGUNTA NO encontrada: " << argumento << endl;
-			break;
-		case true:
-			salida << "PREGUNTA ENCONTRADA: " << flush;
-			// Info de la pregunta
-			break;
+		salida << "PREGUNTA ENCONTRADA: " << flush;
+	}
+	else{
+		salida << "PREGUNTA NO encontrada: " << argumento << endl;
 	}
 }
 
@@ -188,14 +185,11 @@ void mp(ifstream& entrada, ofstream& salida, concurso& c){
 	 * true: la pregunta a marcar no se encuentra en la coleccion
 	 */
 
-	switch(marcarPregunta(c, convertir(argumento[0]),t))
-	{
-		case false:
-			salida << "PREGUNTA MARCADA: " << convertir(argumento[0]) << ";" << argumento[1] << endl;
-			break;
-		case true:
-			salida << "MARCA DESCARTADA: " << convertir(argumento[0]) << endl;
-			break;
+	if(marcarPregunta(c, convertir(argumento[0]),t)){
+		salida << "MARCA DESCARTADA: " << convertir(argumento[0]) << endl;
+	}
+	else{
+		salida << "PREGUNTA MARCADA: " << convertir(argumento[0]) << ";" << argumento[1] << endl;
 	}
 
 }
@@ -280,15 +274,13 @@ void mpa(ifstream& entrada, ofstream& salida, concurso& c){
 	 * false: ya existia el participante
 	 */
 
-	switch(obtenerInfoConcursante(c, argumento, p))
+	if(obtenerInfoConcursante(c, argumento, p))
 	{
-		case true:
-			salida << "participante DESCONOCIDO: " << argumento << endl;
-			break;
-		case false:
-			salida << "participante ENCONTRADO: " << endl;
-			break;
-			// Falta la info del participante
+		salida << "participante DESCONOCIDO: " << argumento << endl;
+	}
+	else{
+		salida << "participante ENCONTRADO: " << endl;
+		// FALTA INFO DEL PARTICIPANTE
 	}
 }
 
@@ -329,14 +321,12 @@ void ii(ifstream& entrada, ofstream& salida, concurso& c){
 	 * true: no se puede pasar a inscripcion
 	 */
 
-	switch(iniciarInscripcion(c))
+	if(iniciarInscripcion(c))
 	{
-		case true:
-			salida << "INSCRIPCION CANCELADA" << endl;
-			break;
-		case false:
-			salida << "INSCRIPCION ABIERTA" << endl;
-			break;
+		salida << "INSCRIPCION CANCELADA" << endl;
+	}
+	else{
+		salida << "INSCRIPCION ABIERTA" << endl;
 	}
 }
 
@@ -348,14 +338,12 @@ void ij(ifstream& entrada, ofstream& salida, concurso& c){
 	 * true: no se puede pasar a fase de juego
 	 */
 
-	switch(iniciarJuego(c))
+	if(iniciarJuego(c))
 	{
-		case true:
-			salida << "NO ES POSIBLE iniciar JUEGO" << endl;
-			break;
-		case false:
-			salida << "INICIANDO JUEGO: " << totalConcursantes(c)  << endl;
-			break;
+		salida << "NO ES POSIBLE iniciar JUEGO" << endl;
+	}
+	else{
+		salida << "INICIANDO JUEGO: " << totalConcursantes(c)  << endl;
 	}
 }
 
@@ -441,15 +429,13 @@ void hg(ifstream& entrada, ofstream& salida, concurso& c){
 	 * true: hay ganadores
 	 */
 
-	switch(hayGanadores(c))
+	if(hayGanadores(c))
 	{
-		case true:
-			salida << "<<< CONCURSANTES GANADORES >>>" << endl;
-			salida << listarConcursantes(c) << flush;
-			break;
-		case false:
-			salida << "SIN GANADORES"  << endl;
-			break;
+		salida << "<<< CONCURSANTES GANADORES >>>" << endl;
+		salida << listarConcursantes(c) << flush;
+	}
+	else{
+		salida << "SIN GANADORES"  << endl;
 	}
 }
 
