@@ -10,6 +10,7 @@
 #include "../clave/clave.h"
 #include "../instante/instante.h"
 #include "../pregunta/pregunta.h"
+#include "../cola/cola.h"
 #ifndef CMT_H
 #define CMT_H
 using namespace std;
@@ -259,9 +260,15 @@ bool borrar_aux (Nodo<T1,T2,T3>* & entrada, T1& k){
 template <typename T1, typename T2, typename T3> 
 bool borrar(cmt<T1, T2, T3>& c, T1& k){
 	int control;
-	control = borrar_aux(c.abb,k);
-	if (control==0){
-		c.numElementos--;
+	
+	if (!existeClave(c,k)){
+		control=1;
+	}
+	else{	
+		control = borrar_aux(c.abb,k);
+		if (control==0){
+			c.numElementos--;
+		}
 	}
 	return control;
 }

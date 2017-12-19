@@ -7,7 +7,6 @@
 *.d
 *.mk
 *.exe
-Makefile
-Makefile.in
+*/*.gch
 concursoentrada.txt
 concursosalida.txt
