@@ -226,10 +226,10 @@ void max(Nodo<T1,T2,T3>* entrada, T1& clave){
 	}
 }
 template <typename T1, typename T2, typename T3> 
-bool borrar_aux (Nodo<T1,T2,T3>* entrada, T1& k){
+bool borrar_aux (Nodo<T1,T2,T3>* & entrada, T1& k){
 	Nodo<T1,T2,T3>* aux;
 	bool error;
-	if (entrada==nullptr){
+	if (entrada!=nullptr){
 		if (k<(entrada->dato.k)){
 			borrar_aux(entrada->izq,k);
 		}

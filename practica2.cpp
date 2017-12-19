@@ -515,6 +515,10 @@ void menu(){
 			lt(f,salida,c);
 		}
 	}
+	//Clausura de los flujos abiertos
+	f.close();
+	salida.close();
+	preguntas.close();
 }
 
 int main(){
