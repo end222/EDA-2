@@ -1,78 +1,99 @@
-lt
-ip
-7
-El sol sale por el...
-Oeste
-Este
-2
-mp
-7
-15:55
-ipa
-Aria
-Desembarco del Rey
-ip
-3
-Cuantos Aegon hay en GoT?
-Uno
-No lo sabe ni G.R.R. Martin
-2
-ip
+oc
+lc
+bp
 1
-Tras el invierno llega...
-la primavera
-el verano
-1
-ip
-14
-abc
-a
-b
-2
-bp
-3
-lt
-bp
-14
-ii
-lt
-bp
-3
-ipa
-Jon
-El Muro
-ij
-ipa
-Aria
-Desembarco del Rey
-ipa
-Bran
-Invernalia
 bpa
-Aria
-ij
-lt
+2
+mpa
+3
+lp
+4
+ipa
+Ines Arrimadas
+Cs
+ip
+5
+Aqua
+H2O
+H3O
+1
+ip
+3
+Oro
+Au
+Or
+1
 pca
-7
+5
 11:00
 0
+ip
+7
+Gas Noble?
+Xeon
+Xenon
+2
+ip
+3
+Ley de Ohm
+V=I*R
+V=I*P
+1
+bp
+5
+ii
+lc
+ipa
+Miquel Iceta
+PSC
+lr
+ipa
+Xavier García
+PP
+ipa
+Oriol Junqueras
+ERC
 lt
-pca
-3
-11:10
+bpa
+Oriol Junqueras
+lt
+hg
+ij
+ipa
+Carles Puigdemont
+PDeCAT
+ip
+9
+Aceleración
+v-v0/t-t0
+pi*r^2
 1
+bp
+9
+bpa
+Carles Puigdemont
+lt
+hg
 pca
-3
-11:15
+7
+1:10
 1
+lt
+ii
+mp
+7
+20:55
+lt
+ij
+pca
+7
+21:00
+2
 lt
 pca
 7
-18:00
+21:05
 1
 hg
-pca
-1
-10:00
-2
 lt
+oc

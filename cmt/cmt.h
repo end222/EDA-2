@@ -136,10 +136,10 @@ bool introducir_aux (Nodo<T1,T2,T3>* & entrada, T1& k, T2& v){
 	}
 	else{
 		if(k<=(entrada->dato.k)){
-			introducir_aux(entrada->izq,k,v);
+			error = introducir_aux(entrada->izq,k,v);
 		}
 		else{
-			introducir_aux(entrada->der,k,v);
+			error = introducir_aux(entrada->der,k,v);
 		}
 	}
 	return error;
@@ -149,7 +149,9 @@ template <typename T1, typename T2, typename T3>
 bool introducir(cmt<T1, T2, T3>& c, T1& k, T2& v){
 	bool control;
 	control=introducir_aux(c.abb,k,v);
-	c.numElementos++;
+	if(control == 0){
+		c.numElementos++;
+	}
 	return control;
 }
 template <typename T1, typename T2, typename T3>

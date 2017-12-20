@@ -163,6 +163,7 @@ bool preguntaUtilizada(concurso& c, int clave){
 
 int obtenerUltimoUsoPregunta(concurso& c, int clave, instante& t){
 	/*
+	 * Codigo de error
 	 * 0: correcto
 	 * 1: no tiene tiempo
 	 * 2: no existe

@@ -37,14 +37,26 @@ string mostrarTiempo(char* tiempo){
 
 void separar(int& horas, int& minutos, char* tiempo){
 	char horasStr[10];
-	horasStr[0] = tiempo[0];
-	horasStr[1] = tiempo[1];
-	horasStr[2] = '\0';
-
 	char minutosStr[10];
-	minutosStr[0] = tiempo[3];
-	minutosStr[1] = tiempo[4];
-	minutosStr[2] = '\0';
+
+	int i = 0;
+
+	while(tiempo[i] != ':'){
+		horasStr[i] = tiempo[i];
+		i++;
+	}
+	horasStr[i] = '\0';
+
+	int j = 0;
+	i++;
+
+	while(tiempo[i] != '\0'){
+		minutosStr[j] = tiempo[i];
+		i++;
+		j++;
+	}
+
+	minutosStr[j] = '\0';
 
 	horas = convertir(horasStr);
 	minutos = convertir(minutosStr);
@@ -157,7 +169,7 @@ void bp(ifstream& entrada, ofstream& salida, concurso& c){
  */
 
 void lc(ifstream& entrada, ofstream& salida, concurso& c){
-	salida << listarPreguntas(c) << endl;
+	salida << listarPreguntas(c) << flush;
 }
 
 /*
@@ -210,7 +222,7 @@ void ipa(ifstream& entrada, ofstream& salida, concurso& c){
 	crearParticipante(p, argumento[1]);
 
 	/*
-	 * Codigo utilizado en la funcion marcarTiempo en concurso.h
+	 * Codigo de error 
 	 * 0: No existia el participante 
 	 * 1: ya existia el participante
 	 * 2: no es posible introducir al participante
@@ -288,32 +300,32 @@ void mpa(ifstream& entrada, ofstream& salida, concurso& c){
 
 void oc(ifstream& entrada, ofstream& salida, concurso& c){
 	/*
-	 * Codigo utilizado en la funcion marcarTiempo en concurso.h
-	 * 0: existe un candidato
+	 * Codigo de error
+	 * 2: existe un candidato
 	 * 1: la ronda esta vacia
-	 * 2: consulta descartada por el estado de la ronda
+	 * 0: consulta descartada por el estado de la ronda
 	 */
 
 	string nombre;
 	participante p;
 	switch(obtenerConcursanteActual(c, nombre))
 	{
-		case 0:
+		case 2:
 			salida << "CANDIDATO a evaluar: " << flush;
 			obtenerInfoConcursante(c, nombre, p);
 			salida << nombre << ";" << generaCadena(p) << endl;
 			break;
 		case 1:
-			salida << "ronda VACIA: " << endl;
+			salida << "ronda VACIA" << endl;
 			break;
-		case 2:
-			salida << "CONSULTA candidato DESCARTADA: " << endl;
+		case 0:
+			salida << "CONSULTA candidato DESCARTADA" << endl;
 			break;
 	}
 }
 
 void lr(ifstream& entrada, ofstream& salida, concurso& c){
-	salida << listarConcursantes(c) << endl;
+	salida << listarConcursantes(c) << flush;
 }
 
 void ii(ifstream& entrada, ofstream& salida, concurso& c){
@@ -394,12 +406,12 @@ void pca(ifstream& entrada, ofstream& salida, concurso& c){
 
 	instante ultimo;
 	int error = obtenerUltimoUsoPregunta(c, convertir(argumento[0]), ultimo);
-	if(esMayor(tiempo,ultimo) ||  error == 1){
-		marcarPregunta(c, convertir(argumento[0]), tiempo);
-	}
 	switch(probarConcursanteActual(c, convertir(argumento[0]), tiempo, convertir(argumento[2])))
 	{
 		case 0:
+			if(esMayor(tiempo,ultimo) ||  error == 1){
+				marcarPregunta(c, convertir(argumento[0]), tiempo);
+			}
 			salida << "+++ RESPONDE CONCURSANTE +++" << endl;
 			salida << "CONCURSANTE: " << concurs << ";" << generaCadena(p) << endl;
 			

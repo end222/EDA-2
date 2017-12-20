@@ -128,6 +128,12 @@ bool pertenece(ronda<T1,T2>& r,T1& c){
  */
 template<typename T1, typename T2>
 bool obtenerValor(ronda<T1,T2>& r,T1& c, T2& v){
+	/*
+         * Codigo de error 
+         * true: No existia el participante
+         * false: ya existia el participante
+         */
+
     typename ronda<T1,T2>::Nodo* aux = r.primero;
     bool encontrado=false;
     T1 laClave;
@@ -142,7 +148,7 @@ bool obtenerValor(ronda<T1,T2>& r,T1& c, T2& v){
             v=elValor;
         }
     }
-    return encontrado;
+    return !encontrado;
 }
 /* Devuelve verdad si y sólo si r está en estado de Selección.*/
 template<typename T1, typename T2>
