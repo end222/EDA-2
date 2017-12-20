@@ -265,12 +265,9 @@ bool borrar_aux (cmt<T1, T2, T3>& c, Nodo<T1,T2,T3>* & entrada, T1 & k){
 				terna<T1,T2,T3> tern;
 				
 				max(entrada->izq,kaux);
-				tern.k = kaux;
-				tern.v = vaux;
-				
-				cout << kaux << endl;
 
 				obtenerDato(c, kaux, vaux);
+
 				bool existeT = tieneTiempo(c,kaux);
 				tern.hayTiempo = existeT;
 			
@@ -278,6 +275,9 @@ bool borrar_aux (cmt<T1, T2, T3>& c, Nodo<T1,T2,T3>* & entrada, T1 & k){
 					obtenerTiempo(c,kaux,taux);
 					tern.t = taux;
 				}
+				
+				tern.k = kaux;
+				tern.v = vaux;
 
 				//Corrección
 				entrada->dato=tern;

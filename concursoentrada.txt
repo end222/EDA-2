@@ -18,19 +18,22 @@ Uno
 No lo sabe ni G.R.R. Martin
 2
 ip
-2
-abc
-a
-b
-2
-ip
 1
 Tras el invierno llega...
 la primavera
 el verano
 1
+ip
+14
+abc
+a
+b
+2
 bp
 3
+lt
+bp
+14
 ii
 lt
 bp
